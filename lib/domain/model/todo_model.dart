@@ -1,41 +1,40 @@
 import 'package:simpletodo/domain/model/base_model.dart';
 
 final class Todo extends BaseData {
-  final String id;
+  final int id;
   final String title;
   final String content;
 
-  final bool deleted;
+  final bool completed;
 
   const Todo({
     required this.id,
     required this.title,
     required this.content,
-    required this.deleted,
+    this.completed = false,
   });
 
   @override
   Todo copyWith({
-    String? id,
+    int? id,
     String? title,
     String? content,
-    bool? deleted,
+    bool? completed,
   }) {
     return Todo(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
-      deleted: deleted ?? this.deleted,
+      completed: completed ?? this.completed,
     );
   }
 
-  @override
-  Todo fromMap(Map<String, dynamic> map) {
+  factory Todo.fromJson(Map<String, dynamic> map) {
     return Todo(
       id: map['id'],
       title: map['title'],
       content: map['content'],
-      deleted: map['deleted'],
+      completed: map['deleted'],
     );
   }
 
@@ -45,7 +44,7 @@ final class Todo extends BaseData {
       'id': id,
       'title': title,
       'content': content,
-      'deleted': deleted,
+      'deleted': completed,
     };
   }
 }

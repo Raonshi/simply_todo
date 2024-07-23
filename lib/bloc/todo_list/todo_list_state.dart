@@ -1,4 +1,4 @@
-part of 'todo_list_provider.dart';
+part of 'todo_list_bloc.dart';
 
 sealed class TodoListState {
   const TodoListState();
@@ -10,8 +10,8 @@ class TodoListInitial extends TodoListState {
   const TodoListInitial();
 
   @override
-  TodoListInitial copyWith() {
-    return const TodoListInitial();
+  TodoListState copyWith() {
+    return TodoListInitial();
   }
 }
 
@@ -19,22 +19,22 @@ class TodoListLoading extends TodoListState {
   const TodoListLoading();
 
   @override
-  TodoListLoading copyWith() {
-    return const TodoListLoading();
+  TodoListState copyWith() {
+    return TodoListLoading();
   }
 }
 
 class TodoListLoaded extends TodoListState {
   final List<Todo> todos;
 
-  const TodoListLoaded({required this.todos});
+  const TodoListLoaded(this.todos);
 
   @override
-  TodoListLoaded copyWith({
+  TodoListState copyWith({
     List<Todo>? todos,
   }) {
     return TodoListLoaded(
-      todos: todos ?? this.todos,
+      todos ?? this.todos,
     );
   }
 }
@@ -42,16 +42,14 @@ class TodoListLoaded extends TodoListState {
 class TodoListError extends TodoListState {
   final Exception exception;
 
-  const TodoListError({
-    required this.exception,
-  });
+  const TodoListError(this.exception);
 
   @override
-  TodoListError copyWith({
+  TodoListState copyWith({
     Exception? exception,
   }) {
     return TodoListError(
-      exception: exception ?? this.exception,
+      exception ?? this.exception,
     );
   }
 }
