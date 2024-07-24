@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/ui/page/home_page.dart';
 
 class SimpleTodoApp extends StatelessWidget {
@@ -7,7 +8,10 @@ class SimpleTodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      theme: lightTheme,
+      debugShowCheckedModeBanner: false,
+      title: "심플리투두",
+      home: const HomePage(),
     );
   }
 }

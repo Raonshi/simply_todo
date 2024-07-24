@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
+import 'package:simpletodo/ui/widget/add_todo_bottom_sheet.dart';
 import 'package:simpletodo/ui/widget/todo_list.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,15 +30,12 @@ class _HomePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.colorTheme.surface,
       appBar: AppBar(
         centerTitle: false,
-        title: const Text(
-          "Simple Todo",
-          style: TextStyle(
-            fontSize: 32.0,
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.5,
-          ),
+        title: Text(
+          "심플리투두",
+          style: context.textTheme.displayMedium,
         ),
       ),
       body: BlocBuilder<TodoListBloc, TodoListState>(
@@ -48,16 +47,59 @@ class _HomePageBody extends StatelessWidget {
           TodoListLoaded loaded => TodoList(
               todos: loaded.todos,
             ),
-          TodoListError error => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.red, width: 1.0),
+          TodoListError error => Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.colorTheme.error,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 40.0, vertical: 12.0),
+                child: Text(
+                  error.exception.toString(),
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorTheme.onError,
+                  ),
+                ),
               ),
-              child: Text(error.exception.toString()),
             ),
           // ignore: unreachable_switch_case
           _ => Container(),
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorTheme.onPrimary,
+                  foregroundColor: context.colorTheme.primary,
+                  textStyle: context.textTheme.titleSmall?.copyWith(
+                    color: context.colorTheme.primary,
+                  ),
+                ),
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  showDragHandle: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16.0),
+                    ),
+                  ),
+                  builder: (subContext) => const AddTodoBottomSheet(),
+                ).then((value) {
+                  if (value == null) return;
+                  context.read<TodoListBloc>().create(value);
+                }),
+                child: const Text("일정 추가"),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
+import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/ui/widget/todo_list_item.dart';
 
@@ -14,20 +17,13 @@ class TodoList extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Card(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                      vertical: 12.0,
-                    ),
-                    child: Text(
-                      "일정이 없습니다.\n일정을 추가해주세요.",
-                      textAlign: TextAlign.center,
-                    ),
+                Text(
+                  "일정이 없습니다.\n일정을 추가해주세요.",
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: context.colorTheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 24.0),
-                ElevatedButton(onPressed: () {}, child: const Text("일정 추가")),
               ],
             ),
           )
@@ -36,8 +32,10 @@ class TodoList extends StatelessWidget {
             itemBuilder: (context, index) {
               return TodoListItem(
                 data: todos[index],
-                onTapCheckbox: () {},
-                onTapDelete: () {},
+                onTapCheckbox: () =>
+                    context.read<TodoListBloc>().toggleCheckbox(index),
+                onTapDelete: () =>
+                    context.read<TodoListBloc>().deleteTodo(index),
               );
             },
           );

@@ -16,48 +16,47 @@ class TodoListBloc extends Cubit<TodoListState> {
   void _init() async {
     emit(const TodoListLoading());
     try {
-      // final List<Todo> todos = await todoRepo.getTodoList();
-      final List<Todo> todos = [
-        Todo(
-          id: 1,
-          title: "Title 1",
-          content: "Content 1",
-          completed: false,
-        ),
-        Todo(
-          id: 2,
-          title: "Title 2",
-          content: "Content 2",
-          completed: false,
-        ),
-        Todo(
-          id: 3,
-          title: "Title 3",
-          content: "Content 3",
-          completed: false,
-        ),
-      ];
+      final List<Todo> todos = await todoRepo.getTodoList();
       emit(TodoListLoaded(todos));
     } catch (e) {
       emit(TodoListError(e as Exception));
     }
   }
 
-  void create({required String title, required String content}) {
+  void create(Todo todo) async {
     switch (state) {
       case TodoListLoaded loaded:
-        final List<Todo> newTodos = [
-          ...loaded.todos,
-          Todo(
-            id: DateTime.now().millisecondsSinceEpoch,
-            title: title,
-            content: content,
-            completed: false,
-          )
-        ];
-
+        final List<Todo> newTodos = [...loaded.todos, todo];
         emit(loaded.copyWith(todos: newTodos));
-        todoRepo.saveTodoList(newTodos);
+        await todoRepo.saveTodoList(newTodos);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void toggleCheckbox(int index) async {
+    switch (state) {
+      case TodoListLoaded loaded:
+        final List<Todo> newTodos = loaded.todos.toList();
+        newTodos[index] = newTodos[index].copyWith(
+          completed: !newTodos[index].completed,
+        );
+        emit(loaded.copyWith(todos: newTodos));
+        await todoRepo.saveTodoList(newTodos);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void deleteTodo(int index) async {
+    switch (state) {
+      case TodoListLoaded loaded:
+        final List<Todo> newTodos = loaded.todos.toList();
+        newTodos.removeAt(index);
+        emit(loaded.copyWith(todos: newTodos));
+        await todoRepo.saveTodoList(newTodos);
         break;
       default:
         break;

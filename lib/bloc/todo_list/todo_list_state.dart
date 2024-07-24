@@ -11,7 +11,7 @@ class TodoListInitial extends TodoListState {
 
   @override
   TodoListState copyWith() {
-    return TodoListInitial();
+    return const TodoListInitial();
   }
 }
 
@@ -20,7 +20,7 @@ class TodoListLoading extends TodoListState {
 
   @override
   TodoListState copyWith() {
-    return TodoListLoading();
+    return const TodoListLoading();
   }
 }
 
