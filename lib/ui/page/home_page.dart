@@ -31,6 +31,7 @@ class _HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorTheme.surface,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: false,
         title: Text(
@@ -68,6 +69,7 @@ class _HomePageBody extends StatelessWidget {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
