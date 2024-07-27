@@ -4,7 +4,6 @@ import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/widget/add_todo_bottom_sheet.dart';
-import 'package:simpletodo/ui/widget/incompleted_list.dart';
 import 'package:simpletodo/ui/widget/todo_panel.dart';
 
 class HomePage extends StatelessWidget {
