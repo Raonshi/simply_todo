@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
-import 'package:simpletodo/ui/widget/todo_list_item.dart';
+import 'package:simpletodo/ui/widget/completed_list.dart';
 
-class TodoList extends StatelessWidget {
-  const TodoList({super.key, required this.todos});
+import 'incompleted_list.dart';
+
+class TodoPanel extends StatelessWidget {
+  const TodoPanel({super.key, required this.todos});
 
   final List<Todo> todos;
 
   @override
   Widget build(BuildContext context) {
+    final List<Todo> completes = todos.where((e) => e.completed).toList();
+    final List<Todo> incompletes = todos.where((e) => !e.completed).toList();
+
     return todos.isEmpty
         ? Center(
             child: Column(
@@ -27,17 +30,11 @@ class TodoList extends StatelessWidget {
               ],
             ),
           )
-        : ListView.builder(
-            itemCount: todos.length,
-            itemBuilder: (context, index) {
-              return TodoListItem(
-                data: todos[index],
-                onTapCheckbox: () =>
-                    context.read<TodoListBloc>().toggleCheckbox(index),
-                onTapDelete: () =>
-                    context.read<TodoListBloc>().deleteTodo(index),
-              );
-            },
+        : ListView(
+            children: [
+              if (incompletes.isNotEmpty) InCompletedList(todos: incompletes),
+              if (completes.isNotEmpty) CompletedList(todos: completes)
+            ],
           );
   }
 }

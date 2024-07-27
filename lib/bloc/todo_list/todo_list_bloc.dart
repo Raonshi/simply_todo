@@ -35,10 +35,13 @@ class TodoListBloc extends Cubit<TodoListState> {
     }
   }
 
-  void toggleCheckbox(int index) async {
+  void toggleCheckbox(int id) async {
     switch (state) {
       case TodoListLoaded loaded:
         final List<Todo> newTodos = loaded.todos.toList();
+        final int index = newTodos.indexWhere((element) => element.id == id);
+        if (index == 0 - 1) return;
+
         newTodos[index] = newTodos[index].copyWith(
           completed: !newTodos[index].completed,
         );
@@ -50,10 +53,13 @@ class TodoListBloc extends Cubit<TodoListState> {
     }
   }
 
-  void deleteTodo(int index) async {
+  void deleteTodo(int id) async {
     switch (state) {
       case TodoListLoaded loaded:
         final List<Todo> newTodos = loaded.todos.toList();
+        final int index = newTodos.indexWhere((element) => element.id == id);
+        if (index == 0 - 1) return;
+
         newTodos.removeAt(index);
         emit(loaded.copyWith(todos: newTodos));
         await todoRepo.saveTodoList(newTodos);
