@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
@@ -30,7 +31,7 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     emit(
       state.copyWith(
         showNotification: newValue,
-        dateTime: newValue ? DateTime.now() : null,
+        dateTime: null,
       ),
     );
   }
@@ -43,6 +44,10 @@ class AddTodoBloc extends Cubit<AddTodoState> {
   }
 
   Future<void> createTodo() async {
+    if (state.showNotification && state.dateTime == null) {
+      throw CustomException("알림 날짜를 설정해주세요!");
+    }
+
     final Todo todo = Todo.create(
       title: state.title,
       content: state.content,
