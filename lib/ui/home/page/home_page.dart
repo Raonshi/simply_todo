@@ -47,6 +47,7 @@ class _HomePageBody extends StatelessWidget {
             ),
           TodoListLoaded loaded => TodoPanel(
               todos: loaded.todos,
+              onRefresh: context.read<TodoListBloc>().refresh,
             ),
           TodoListError error => Center(
               child: Container(
@@ -86,7 +87,7 @@ class _HomePageBody extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AddTodoPage()),
-                ),
+                ).then((_) => context.read<TodoListBloc>().refresh()),
                 child: const Text("일정 추가"),
               ),
             )

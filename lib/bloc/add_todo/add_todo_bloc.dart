@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
 import 'package:simpletodo/service/notification_service.dart';
@@ -24,13 +25,21 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     emit(state.copyWith(dateTime: dateTime));
   }
 
-  void setShowNotification(bool showNotification) {
+  void toggleShowNotification() {
+    final bool newValue = !state.showNotification;
     emit(
       state.copyWith(
-        showNotification: showNotification,
-        dateTime: showNotification ? DateTime.now() : null,
+        showNotification: newValue,
+        dateTime: newValue ? DateTime.now() : null,
       ),
     );
+  }
+
+  @override
+  void onChange(Change<AddTodoState> change) {
+    lgr.d("CURRENT STATE : ${change.currentState.toString()}\n"
+        "NEXT STATE : ${change.nextState.toString()}");
+    super.onChange(change);
   }
 
   Future<void> createTodo() async {
@@ -45,7 +54,7 @@ class AddTodoBloc extends Cubit<AddTodoState> {
       id: todo.id,
       title: todo.title,
       body: todo.content,
-      timestamp: todo.timestamp,
+      dateTime: DateTime.fromMillisecondsSinceEpoch(todo.timestamp),
     );
 
     await todoRepo.saveTodo(todo);

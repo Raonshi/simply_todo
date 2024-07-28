@@ -6,9 +6,10 @@ import 'package:simpletodo/ui/home/widget/completed_list.dart';
 import 'incompleted_list.dart';
 
 class TodoPanel extends StatelessWidget {
-  const TodoPanel({super.key, required this.todos});
+  const TodoPanel({super.key, required this.todos, required this.onRefresh});
 
   final List<Todo> todos;
+  final VoidCallback onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +28,24 @@ class TodoPanel extends StatelessWidget {
                     color: context.colorTheme.onSurface,
                   ),
                 ),
+                const SizedBox(height: 12.0),
+                IconButton(
+                  onPressed: onRefresh,
+                  iconSize: 32.0,
+                  color: context.colorTheme.onSurface,
+                  icon: const Icon(Icons.refresh, size: 24.0),
+                ),
               ],
             ),
           )
-        : ListView(
-            children: [
-              if (incompletes.isNotEmpty) InCompletedList(todos: incompletes),
-              if (completes.isNotEmpty) CompletedList(todos: completes)
-            ],
+        : RefreshIndicator.adaptive(
+            onRefresh: () async => onRefresh(),
+            child: ListView(
+              children: [
+                if (incompletes.isNotEmpty) InCompletedList(todos: incompletes),
+                if (completes.isNotEmpty) CompletedList(todos: completes)
+              ],
+            ),
           );
   }
 }

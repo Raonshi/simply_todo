@@ -17,6 +17,12 @@ ThemeData lightTheme = ThemeData(
     surface: Colors.grey.shade50,
     onSurface: Colors.grey,
   ),
+  appBarTheme: AppBarTheme(
+    surfaceTintColor: Colors.grey.shade50,
+    elevation: 0.0,
+    backgroundColor: Colors.grey.shade50,
+    foregroundColor: Colors.black,
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontSize: 48.0,

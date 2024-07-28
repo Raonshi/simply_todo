@@ -11,12 +11,5 @@ void main(List<String> args) async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await NotificationService().scheduleNotification(
-    id: 0,
-    title: 'Simple Todo',
-    body: 'Welcome to Simple Todo!',
-    timestamp: DateTime.now().millisecondsSinceEpoch,
-  );
-
   runApp(const SimpleTodoApp());
 }

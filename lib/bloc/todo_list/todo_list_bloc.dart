@@ -1,3 +1,4 @@
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
@@ -18,28 +19,10 @@ class TodoListBloc extends Cubit<TodoListState> {
     emit(const TodoListLoading());
     try {
       final List<Todo> todos = await todoRepo.getTodoList();
+      lgr.d(todos.map((e) => e.toMap).toString());
       emit(TodoListLoaded(todos));
     } catch (e) {
       emit(TodoListError(e as Exception));
-    }
-  }
-
-  void create(Todo todo) async {
-    switch (state) {
-      case TodoListLoaded loaded:
-        final List<Todo> newTodos = [...loaded.todos, todo];
-        await NotificationService().scheduleNotification(
-          id: todo.id,
-          title: todo.title,
-          body: todo.content,
-          timestamp: todo.timestamp,
-        );
-
-        emit(loaded.copyWith(todos: newTodos));
-        await todoRepo.saveTodoList(newTodos);
-        break;
-      default:
-        break;
     }
   }
 
@@ -61,7 +44,9 @@ class TodoListBloc extends Cubit<TodoListState> {
             id: id,
             title: newTodos[index].title,
             body: newTodos[index].content,
-            timestamp: newTodos[index].timestamp,
+            dateTime: DateTime.fromMillisecondsSinceEpoch(
+              newTodos[index].timestamp,
+            ),
           );
         }
 
@@ -88,5 +73,9 @@ class TodoListBloc extends Cubit<TodoListState> {
       default:
         break;
     }
+  }
+
+  void refresh() {
+    _init();
   }
 }

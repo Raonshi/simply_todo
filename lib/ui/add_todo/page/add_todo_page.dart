@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:simpletodo/bloc/add_todo/add_todo_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
+import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
@@ -11,11 +12,11 @@ class AddTodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => TodoRepository(),
+      create: (context) => TodoRepositoryImpl(),
       child: BlocProvider(
         lazy: false,
         create: (context) => AddTodoBloc(
-          todoRepo: RepositoryProvider.of<TodoRepository>(context),
+          todoRepo: RepositoryProvider.of<TodoRepositoryImpl>(context),
         ),
         child: _AddTodoPageBody(
           formKey: GlobalKey<FormState>(),
@@ -32,26 +33,41 @@ class _AddTodoPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Todo"),
-      ),
-      body: BlocBuilder<AddTodoBloc, AddTodoState>(
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: Text(
+            "할 일 추가",
+            style: context.textTheme.titleLarge,
+          ),
+          actions: [
+            IconButton(
+              iconSize: 32.0,
+              icon: const Icon(Icons.check, size: 24.0),
+              onPressed: () {
+                if (formKey.currentState?.validate() ?? false) {
+                  context.loaderOverlay.show();
+                  context.read<AddTodoBloc>().createTodo().then((_) {
+                    context.loaderOverlay.hide();
+                    Navigator.of(context).pop();
+                  });
+                }
+              },
+            ),
+            const SizedBox(width: 12.0),
+          ],
+        ),
+        body: BlocBuilder<AddTodoBloc, AddTodoState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
               child: Form(
                 key: formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      "일정 추가",
-                      style: context.textTheme.titleSmall,
-                    ),
+                    // Title
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: TextFormField(
@@ -79,7 +95,9 @@ class _AddTodoPageBody extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 12.0),
+                    const SizedBox(height: 24.0),
+
+                    // Content
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: TextFormField(
@@ -101,49 +119,30 @@ class _AddTodoPageBody extends StatelessWidget {
                         onChanged: context.read<AddTodoBloc>().setContent,
                       ),
                     ),
-                    const SizedBox(height: 12.0),
-                    TableCalendar(
-                      focusedDay: DateTime.now(),
-                      firstDay:
-                          DateTime.now().subtract(const Duration(days: 365)),
-                      lastDay: DateTime.now().add(const Duration(days: 365)),
-                    ),
-                    const SizedBox(height: 12.0),
-                    SwitchListTile.adaptive(
-                      value: true,
-                      onChanged: (_) {},
-                      title: Text(
-                        "알림 설정",
-                        style: context.textTheme.labelLarge,
-                      ),
-                    ),
                     const SizedBox(height: 24.0),
-                    InkWell(
-                      onTap: () {
-                        if (formKey.currentState?.validate() ?? false) {
-                          context.read<AddTodoBloc>().createTodo();
-                        }
-                      },
-                      child: Container(
-                        color: context.colorTheme.onPrimary,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(top: 24.0, bottom: 24.0),
-                        child: SafeArea(
-                          child: Text(
-                            "일정 추가",
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: context.colorTheme.primary,
-                            ),
-                          ),
-                        ),
-                      ),
+                    Divider(
+                      height: 4.0,
+                      thickness: 4.0,
+                      color: context.colorTheme.onSurface.withOpacity(0.08),
                     ),
+                    const SizedBox(height: 12.0),
+
+                    // Notification / Date
+                    AddTodoSchedulePanel(
+                      showNotification: state.showNotification,
+                      onTapNotiSwitch:
+                          context.read<AddTodoBloc>().toggleShowNotification,
+                      onDaySelected: context.read<AddTodoBloc>().setDateTime,
+                      selectedDay: state.dateTime,
+                    ),
+
+                    const SizedBox(height: 64.0),
                   ],
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

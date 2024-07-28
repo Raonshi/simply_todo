@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:simpletodo/common/tools.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -28,9 +29,9 @@ class NotificationService {
     bool initialized =
         await _notiPlugin.initialize(_initializationSettings) ?? false;
     if (initialized) {
-      log('NotificationService initialized');
+      lgr.d('NotificationService initialized');
     } else {
-      log('Failed to initialize NotificationService');
+      lgr.d('Failed to initialize NotificationService');
     }
   }
 
@@ -57,7 +58,7 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
-    required int timestamp,
+    required DateTime dateTime,
   }) async {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -74,11 +75,16 @@ class NotificationService {
       ),
     );
 
+    final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
+      DateTime(dateTime.year, dateTime.month, dateTime.day, 9),
+      tz.local,
+    );
+
     await _notiPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      timeZoneDate,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -86,7 +92,7 @@ class NotificationService {
     );
 
     _notiPlugin.pendingNotificationRequests().then((value) {
-      log('Pending notifications: ${value.map((e) => e.title)}');
+      lgr.d('Pending notifications: ${value.map((e) => e.title)}');
     });
   }
 

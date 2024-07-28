@@ -26,4 +26,9 @@ class AddTodoState {
       showNotification: showNotification ?? this.showNotification,
     );
   }
+
+  @override
+  String toString() {
+    return 'AddTodoState(title: $title, content: $content, dateTime: $dateTime, showNotification: $showNotification)';
+  }
 }
