@@ -5,36 +5,74 @@ final class Todo extends BaseData {
   final String title;
   final String content;
 
+  final int timestamp;
+  final bool showNotification;
+
   final bool completed;
 
-  const Todo({
+  const Todo._({
     required this.id,
     required this.title,
+    required this.timestamp,
     required this.content,
-    this.completed = false,
+    required this.completed,
+    required this.showNotification,
   });
 
+  /// Create a new Todo instance.
+  /// [id] is the timestamp in days.
+  factory Todo.create({
+    required String title,
+    required String content,
+    required DateTime? dateTime,
+    required bool showNotification,
+  }) {
+    // dateTime should be converted to timestamp
+    late final int timestamp;
+    if (showNotification && dateTime != null) {
+      timestamp = dateTime.millisecondsSinceEpoch;
+    } else {
+      timestamp = DateTime.now().millisecondsSinceEpoch;
+    }
+
+    // id is the timestamp in days
+    final int id = timestamp ~/ (1000 * 60 * 60 * 24);
+
+    return Todo._(
+        id: id,
+        title: title,
+        content: content,
+        timestamp: timestamp,
+        completed: false,
+        showNotification: showNotification);
+  }
+
+  /// Copy current Todo instance with new values.
+  /// `id` and `timestamp` are not copied.
   @override
   Todo copyWith({
-    int? id,
     String? title,
     String? content,
     bool? completed,
   }) {
-    return Todo(
-      id: id ?? this.id,
+    return Todo._(
+      id: id,
       title: title ?? this.title,
       content: content ?? this.content,
+      timestamp: timestamp,
       completed: completed ?? this.completed,
+      showNotification: showNotification,
     );
   }
 
   factory Todo.fromJson(Map<String, dynamic> map) {
-    return Todo(
+    return Todo._(
       id: map['id'],
       title: map['title'],
       content: map['content'],
-      completed: map['deleted'],
+      timestamp: map['timestamp'],
+      completed: map['completed'],
+      showNotification: map['showNotification'],
     );
   }
 
@@ -44,7 +82,9 @@ final class Todo extends BaseData {
       'id': id,
       'title': title,
       'content': content,
-      'deleted': completed,
+      'timestamp': timestamp,
+      'completed': completed,
+      'showNotification': showNotification,
     };
   }
 }

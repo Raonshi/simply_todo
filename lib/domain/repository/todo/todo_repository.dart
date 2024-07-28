@@ -5,7 +5,14 @@ interface class TodoRepository {
     throw UnimplementedError();
   }
 
+  Future<void> saveTodo(Todo todo) async {}
+
   Future<List<Todo>> getTodoList() async {
     throw UnimplementedError();
   }
+
+  Future<void> deleteTodo(int id) async {}
+
+  Future<void> clearTodoList() async {}
+
 }

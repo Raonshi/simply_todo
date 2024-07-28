@@ -89,4 +89,9 @@ class NotificationService {
       log('Pending notifications: ${value.map((e) => e.title)}');
     });
   }
+
+  /// Remove scheduled notification with [id].
+  Future<void> cancelScheduledNotification(int id) async {
+    await _notiPlugin.cancel(id);
+  }
 }

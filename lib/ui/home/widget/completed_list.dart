@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
-import 'package:simpletodo/ui/widget/todo_list_item.dart';
+import 'package:simpletodo/ui/home/widget/todo_list_item.dart';
 
 class CompletedList extends StatelessWidget {
   const CompletedList({super.key, required this.todos});

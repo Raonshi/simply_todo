@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
-import 'package:simpletodo/ui/widget/completed_list.dart';
+import 'package:simpletodo/ui/home/widget/completed_list.dart';
 
 import 'incompleted_list.dart';
 

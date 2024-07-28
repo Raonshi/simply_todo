@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simpletodo/bloc/todo_list/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
-import 'package:simpletodo/ui/widget/add_todo_bottom_sheet.dart';
-import 'package:simpletodo/ui/widget/todo_panel.dart';
+import 'package:simpletodo/ui/add_todo/page/add_todo_page.dart';
+import 'package:simpletodo/ui/home/widget/todo_panel.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -83,20 +83,10 @@ class _HomePageBody extends StatelessWidget {
                     color: context.colorTheme.primary,
                   ),
                 ),
-                onPressed: () => showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  showDragHandle: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(16.0),
-                    ),
-                  ),
-                  builder: (subContext) => const AddTodoBottomSheet(),
-                ).then((value) {
-                  if (value == null) return;
-                  context.read<TodoListBloc>().create(value);
-                }),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddTodoPage()),
+                ),
                 child: const Text("일정 추가"),
               ),
             )

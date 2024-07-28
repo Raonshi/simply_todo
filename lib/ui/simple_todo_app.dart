@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/ui/page/home_page.dart';
+import 'package:simpletodo/ui/home/page/home_page.dart';
 
 class SimpleTodoApp extends StatelessWidget {
   const SimpleTodoApp({super.key});
