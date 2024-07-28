@@ -42,7 +42,7 @@ class TodoPanel extends StatelessWidget {
             onRefresh: () async => onRefresh(),
             child: ListView(
               children: [
-                if (incompletes.isNotEmpty) InCompletedList(todos: incompletes),
+                InCompletedList(todos: incompletes),
                 if (completes.isNotEmpty) CompletedList(todos: completes)
               ],
             ),

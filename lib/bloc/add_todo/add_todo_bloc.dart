@@ -50,12 +50,14 @@ class AddTodoBloc extends Cubit<AddTodoState> {
       showNotification: state.showNotification,
     );
 
-    await NotificationService().scheduleNotification(
-      id: todo.id,
-      title: todo.title,
-      body: todo.content,
-      dateTime: DateTime.fromMillisecondsSinceEpoch(todo.timestamp),
-    );
+    if (todo.showNotification && todo.dateTime != null) {
+      await NotificationService().scheduleNotification(
+        id: todo.id,
+        title: todo.title,
+        body: todo.content,
+        dateTime: todo.dateTime!,
+      );
+    }
 
     await todoRepo.saveTodo(todo);
   }

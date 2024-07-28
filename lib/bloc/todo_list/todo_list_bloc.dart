@@ -1,4 +1,3 @@
-import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
@@ -19,7 +18,6 @@ class TodoListBloc extends Cubit<TodoListState> {
     emit(const TodoListLoading());
     try {
       final List<Todo> todos = await todoRepo.getTodoList();
-      lgr.d(todos.map((e) => e.toMap).toString());
       emit(TodoListLoaded(todos));
     } catch (e) {
       emit(TodoListError(e as Exception));
@@ -33,21 +31,28 @@ class TodoListBloc extends Cubit<TodoListState> {
         final int index = newTodos.indexWhere((element) => element.id == id);
         if (index == 0 - 1) return;
 
-        newTodos[index] = newTodos[index].copyWith(
-          completed: !newTodos[index].completed,
+        final bool newValue = !newTodos[index].completed;
+        final Todo newTodo = newTodos[index].copyWith(
+          completed: newValue,
+          showNotification: newValue
+              ? false
+              : newTodos[index].dateTime != null
+                  ? true
+                  : false,
         );
+        newTodos[index] = newTodo;
 
-        if (newTodos[index].completed) {
-          await NotificationService().cancelScheduledNotification(id);
-        } else {
+        if (newTodo.dateTime != null &&
+            !newTodo.completed &&
+            newTodo.showNotification) {
           await NotificationService().scheduleNotification(
             id: id,
             title: newTodos[index].title,
             body: newTodos[index].content,
-            dateTime: DateTime.fromMillisecondsSinceEpoch(
-              newTodos[index].timestamp,
-            ),
+            dateTime: newTodos[index].dateTime!,
           );
+        } else {
+          await NotificationService().cancelScheduledNotification(id);
         }
 
         emit(loaded.copyWith(todos: newTodos));

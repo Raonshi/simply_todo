@@ -120,7 +120,8 @@ class _TodoListItemState extends State<TodoListItem> {
                       ),
 
                       // Notification Date Time
-                      if (widget.data.showNotification)
+                      if (widget.data.showNotification &&
+                          widget.data.dateTime != null)
                         Container(
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 4.0),
@@ -129,8 +130,7 @@ class _TodoListItemState extends State<TodoListItem> {
                               children: [
                                 TextSpan(
                                   text: DateFormat("yyyy. MM. dd").format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        widget.data.timestamp),
+                                    widget.data.dateTime!,
                                   ),
                                   style: context.textTheme.labelSmall?.copyWith(
                                     color: context.colorTheme.onPrimary,
@@ -153,19 +153,20 @@ class _TodoListItemState extends State<TodoListItem> {
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: context.colorTheme.onPrimary,
-              shape: BoxShape.circle,
+          if (widget.data.showNotification)
+            Container(
+              decoration: BoxDecoration(
+                color: context.colorTheme.onPrimary,
+                shape: BoxShape.circle,
+              ),
+              margin: const EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.notifications,
+                size: 16.0,
+                color: context.colorTheme.primary,
+              ),
             ),
-            margin: const EdgeInsets.only(left: 8.0),
-            padding: const EdgeInsets.all(4.0),
-            child: Icon(
-              Icons.notifications,
-              size: 16.0,
-              color: context.colorTheme.primary,
-            ),
-          ),
         ],
       ),
     );

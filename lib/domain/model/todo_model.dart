@@ -5,7 +5,7 @@ final class Todo extends BaseData {
   final String title;
   final String content;
 
-  final int timestamp;
+  final DateTime? dateTime;
   final bool showNotification;
 
   final bool completed;
@@ -13,7 +13,7 @@ final class Todo extends BaseData {
   const Todo._({
     required this.id,
     required this.title,
-    required this.timestamp,
+    required this.dateTime,
     required this.content,
     required this.completed,
     required this.showNotification,
@@ -42,7 +42,7 @@ final class Todo extends BaseData {
         id: id,
         title: title,
         content: content,
-        timestamp: timestamp,
+        dateTime: dateTime,
         completed: false,
         showNotification: showNotification);
   }
@@ -54,14 +54,15 @@ final class Todo extends BaseData {
     String? title,
     String? content,
     bool? completed,
+    bool? showNotification,
   }) {
     return Todo._(
       id: id,
       title: title ?? this.title,
       content: content ?? this.content,
-      timestamp: timestamp,
+      dateTime: dateTime,
       completed: completed ?? this.completed,
-      showNotification: showNotification,
+      showNotification: showNotification ?? this.showNotification,
     );
   }
 
@@ -70,7 +71,9 @@ final class Todo extends BaseData {
       id: map['id'],
       title: map['title'],
       content: map['content'],
-      timestamp: map['timestamp'],
+      dateTime: map['dateTime'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['dateTime']),
       completed: map['completed'],
       showNotification: map['showNotification'],
     );
@@ -82,7 +85,7 @@ final class Todo extends BaseData {
       'id': id,
       'title': title,
       'content': content,
-      'timestamp': timestamp,
+      'dateTime': dateTime?.millisecondsSinceEpoch,
       'completed': completed,
       'showNotification': showNotification,
     };

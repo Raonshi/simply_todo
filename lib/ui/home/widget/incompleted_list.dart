@@ -26,22 +26,42 @@ class InCompletedList extends StatelessWidget {
           indent: 20.0,
           endIndent: 20.0,
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: todos.length,
-          itemBuilder: (context, index) {
-            final Todo todo = todos[index];
-            return TodoListItem(
-              key: ValueKey(todo.id),
-              data: todo,
-              onTapCheckbox: () =>
-                  context.read<TodoListBloc>().toggleCheckbox(todo.id),
-              onTapDelete: () =>
-                  context.read<TodoListBloc>().deleteTodo(todo.id),
-            );
-          },
-        ),
+        if (todos.isEmpty)
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              border:
+                  Border.all(color: context.colorTheme.onSurface, width: 1.0),
+            ),
+            padding:
+                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+            child: Text(
+              "일정이 없습니다.\n일정을 추가해주세요.",
+              textAlign: TextAlign.center,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorTheme.onSurface,
+              ),
+            ),
+          )
+        else
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: todos.length,
+            itemBuilder: (context, index) {
+              final Todo todo = todos[index];
+              return TodoListItem(
+                key: ValueKey(todo.id),
+                data: todo,
+                onTapCheckbox: () =>
+                    context.read<TodoListBloc>().toggleCheckbox(todo.id),
+                onTapDelete: () =>
+                    context.read<TodoListBloc>().deleteTodo(todo.id),
+              );
+            },
+          ),
       ],
     );
   }
