@@ -35,8 +35,8 @@ final class Todo extends BaseData {
       timestamp = DateTime.now().millisecondsSinceEpoch;
     }
 
-    // id is the timestamp in days
-    final int id = timestamp ~/ (1000 * 60 * 60 * 24);
+    // id is the timestamp in seconds
+    final int id = timestamp ~/ 1000;
 
     return Todo._(
         id: id,
