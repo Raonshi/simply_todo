@@ -7,12 +7,7 @@
 - 생성된 할일 목록에 대한 푸시 알림 제공
 - 할일 완료 여부 체크 기능
 
-
 ## 스크린샷
-<img src="./doc/resource/screenshot_1.png" width="200"/>
-
-<img src="./doc/resource/screenshot_2.png" width="200"/>
-
 
 ## 문의
 문의사항이 있을 경우 아래의 이메일, 혹은 깃헙 이슈 등록을 통해 문의할 수 있습니다.
