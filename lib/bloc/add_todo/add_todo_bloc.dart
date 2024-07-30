@@ -14,6 +14,10 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     required this.todoRepo,
   }) : super(const AddTodoState());
 
+  void setVisibleScrollArrow(bool dismissable) {
+    emit(state.copyWith(visibleScrollArrow: !dismissable));
+  }
+
   void setTitle(String title) {
     emit(state.copyWith(title: title));
   }
@@ -31,6 +35,7 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     emit(
       state.copyWith(
         showNotification: newValue,
+        visibleScrollArrow: newValue == false ? false : true,
         dateTime: null,
       ),
     );

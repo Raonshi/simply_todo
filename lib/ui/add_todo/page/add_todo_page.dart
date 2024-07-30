@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:simpletodo/bloc/add_todo/add_todo_bloc.dart';
 import 'package:simpletodo/common/exception.dart';
@@ -35,6 +36,13 @@ class _AddTodoPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
+      final bool dismissArrow =
+          scrollController.offset > (MediaQuery.of(context).size.height * 0.2);
+      context.read<AddTodoBloc>().setVisibleScrollArrow(dismissArrow);
+    });
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -47,7 +55,7 @@ class _AddTodoPageBody extends StatelessWidget {
           actions: [
             IconButton(
               iconSize: 32.0,
-              icon: const Icon(Icons.check, size: 24.0),
+              icon: const Icon(FontAwesomeIcons.check, size: 24.0),
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
                   context.loaderOverlay.show();
@@ -71,85 +79,123 @@ class _AddTodoPageBody extends StatelessWidget {
         ),
         body: BlocBuilder<AddTodoBloc, AddTodoState>(
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Title
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextFormField(
-                        cursorColor: context.colorTheme.onPrimary,
-                        maxLength: 50,
-                        decoration: InputDecoration(
-                          labelText: "제목",
-                          labelStyle: context.textTheme.labelLarge?.copyWith(
-                            color: context.colorTheme.onPrimary,
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: context.colorTheme.onPrimary,
-                              width: 1.5,
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                SingleChildScrollView(
+                  controller: scrollController,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Title
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: TextFormField(
+                            cursorColor: context.colorTheme.onPrimary,
+                            maxLength: 50,
+                            decoration: InputDecoration(
+                              labelText: "제목",
+                              labelStyle:
+                                  context.textTheme.labelLarge?.copyWith(
+                                color: context.colorTheme.onPrimary,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.colorTheme.onPrimary,
+                                  width: 1.5,
+                                ),
+                              ),
                             ),
+                            textInputAction: TextInputAction.next,
+                            onChanged: context.read<AddTodoBloc>().setTitle,
+                            validator: (String? value) {
+                              if ((value ?? "").isEmpty) {
+                                return "제목을 입력해주세요.";
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        textInputAction: TextInputAction.next,
-                        onChanged: context.read<AddTodoBloc>().setTitle,
-                        validator: (String? value) {
-                          if ((value ?? "").isEmpty) {
-                            return "제목을 입력해주세요.";
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 24.0),
+                        const SizedBox(height: 24.0),
 
-                    // Content
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextFormField(
-                        cursorColor: context.colorTheme.onPrimary,
-                        minLines: 10,
-                        maxLines: 10,
-                        decoration: InputDecoration(
-                          labelText: "내용",
-                          labelStyle: context.textTheme.labelLarge?.copyWith(
-                            color: context.colorTheme.onPrimary,
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: context.colorTheme.onPrimary,
-                              width: 1.5,
+                        // Content
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: TextFormField(
+                            cursorColor: context.colorTheme.onPrimary,
+                            minLines: 10,
+                            maxLines: 10,
+                            decoration: InputDecoration(
+                              labelText: "내용",
+                              labelStyle:
+                                  context.textTheme.labelLarge?.copyWith(
+                                color: context.colorTheme.onPrimary,
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: context.colorTheme.onPrimary,
+                                  width: 1.5,
+                                ),
+                              ),
                             ),
+                            onChanged: context.read<AddTodoBloc>().setContent,
                           ),
                         ),
-                        onChanged: context.read<AddTodoBloc>().setContent,
-                      ),
-                    ),
-                    const SizedBox(height: 24.0),
-                    Divider(
-                      height: 4.0,
-                      thickness: 4.0,
-                      color: context.colorTheme.onSurface.withOpacity(0.08),
-                    ),
-                    const SizedBox(height: 12.0),
+                        const SizedBox(height: 24.0),
+                        Divider(
+                          height: 4.0,
+                          thickness: 4.0,
+                          color: context.colorTheme.onSurface.withOpacity(0.08),
+                        ),
+                        const SizedBox(height: 12.0),
 
-                    // Notification / Date
-                    AddTodoSchedulePanel(
-                      showNotification: state.showNotification,
-                      onTapNotiSwitch:
-                          context.read<AddTodoBloc>().toggleShowNotification,
-                      onDaySelected: context.read<AddTodoBloc>().setDateTime,
-                      selectedDay: state.dateTime,
-                    ),
+                        // Notification / Date
+                        AddTodoSchedulePanel(
+                          showNotification: state.showNotification,
+                          onTapNotiSwitch: context
+                              .read<AddTodoBloc>()
+                              .toggleShowNotification,
+                          onDaySelected:
+                              context.read<AddTodoBloc>().setDateTime,
+                          selectedDay: state.dateTime,
+                        ),
 
-                    const SizedBox(height: 64.0),
-                  ],
+                        const SizedBox(height: 64.0),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                if (state.visibleScrollArrow)
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withOpacity(0.1),
+                          Colors.white.withOpacity(0.35),
+                          Colors.white.withOpacity(0.7),
+                          Colors.white,
+                        ],
+                      ),
+                    ),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: InkWell(
+                      onTap: () => scrollController.animateTo(
+                        MediaQuery.of(context).size.height,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.fastOutSlowIn,
+                      ),
+                      child: Icon(
+                        FontAwesomeIcons.chevronDown,
+                        color: context.colorTheme.onSurface,
+                      ),
+                    ),
+                  ),
+              ],
             );
           },
         ),
