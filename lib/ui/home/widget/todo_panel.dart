@@ -33,7 +33,7 @@ class TodoPanel extends StatelessWidget {
                   onPressed: onRefresh,
                   iconSize: 32.0,
                   color: context.colorTheme.onSurface,
-                  icon: const Icon(Icons.refresh, size: 24.0),
+                  icon: const Icon(Icons.refresh_rounded, size: 24.0),
                 ),
               ],
             ),

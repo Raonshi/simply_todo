@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simpletodo/common/theme.dart';
 
 void showCommonSnackbar({
@@ -15,7 +16,7 @@ void showCommonSnackbar({
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Icon(
-                Icons.info,
+                FontAwesomeIcons.info,
                 size: 24.0,
                 color: context.colorTheme.primary,
               ),
@@ -50,7 +51,7 @@ void showErrorSnackbar({
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Icon(
-                Icons.dangerous,
+                Icons.dangerous_rounded,
                 size: 24.0,
                 color: context.colorTheme.onError,
               ),

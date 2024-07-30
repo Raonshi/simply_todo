@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -111,8 +112,9 @@ class _TodoListItemState extends State<TodoListItem> {
                               icon: RotatedBox(
                                 quarterTurns: _isExpand ? 2 : 0,
                                 child: Icon(
-                                  Icons.expand_more,
+                                  FontAwesomeIcons.chevronDown,
                                   color: context.colorTheme.onPrimary,
+                                  size: 16.0,
                                 ),
                               ),
                             )
@@ -162,7 +164,7 @@ class _TodoListItemState extends State<TodoListItem> {
               margin: const EdgeInsets.only(left: 8.0),
               padding: const EdgeInsets.all(4.0),
               child: Icon(
-                Icons.notifications,
+                FontAwesomeIcons.solidBell,
                 size: 16.0,
                 color: context.colorTheme.primary,
               ),
