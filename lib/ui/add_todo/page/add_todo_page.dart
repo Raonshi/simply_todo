@@ -152,6 +152,8 @@ class _AddTodoPageBody extends StatelessWidget {
                           thickness: 4.0,
                           color: context.colorTheme.onSurface.withOpacity(0.08),
                         ),
+
+                        // Notification Switch
                         Container(
                           foregroundDecoration: BoxDecoration(
                             color: isSameDay(state.dueDate, DateTime.now())
@@ -172,7 +174,7 @@ class _AddTodoPageBody extends StatelessWidget {
                               style: context.textTheme.titleSmall,
                             ),
                             subtitle: Padding(
-                              padding: EdgeInsets.only(top: 4.0),
+                              padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
                                 "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
                                 style: context.textTheme.bodyMedium!.copyWith(
@@ -190,7 +192,7 @@ class _AddTodoPageBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 24.0),
 
-                        // Notification / Date
+                        // Calendar
                         AddTodoSchedulePanel(
                           showNotification: state.showNotification,
                           onTapNotiSwitch: context
@@ -199,6 +201,12 @@ class _AddTodoPageBody extends StatelessWidget {
                           onDaySelected:
                               context.read<AddTodoBloc>().setDateTime,
                           selectedDay: state.dueDate,
+                          rangeDate: state.rangeDate,
+                          rangeSelection: state.rangeSelection,
+                          onTapRangeDateSwitch:
+                              context.read<AddTodoBloc>().toggleSwitchRangeDate,
+                          onRangeSelected:
+                              context.read<AddTodoBloc>().setRangeDate,
                         ),
 
                         const SizedBox(height: 64.0),

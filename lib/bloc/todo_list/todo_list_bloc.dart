@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
@@ -49,7 +51,7 @@ class TodoListBloc extends Cubit<TodoListState> {
             id: id,
             title: newTodos[index].title,
             body: newTodos[index].content,
-            dueDate: newTodos[index].dueDate!,
+            dueDate: newTodos[index].dueDate,
           );
         } else {
           await NotificationService().cancelScheduledNotification(id);

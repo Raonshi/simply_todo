@@ -121,34 +121,49 @@ class _TodoListItemState extends State<TodoListItem> {
                         ],
                       ),
 
-                      // Notification Date Time
-                      if (widget.data.showNotification &&
-                          widget.data.dueDate != null)
-                        Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
+                      //Date Time
+                      Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: DateFormat("yyyy. MM. dd").format(
+                                  widget.data.dueDate,
+                                ),
+                                style: context.textTheme.labelSmall?.copyWith(
+                                  color: context.colorTheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              if (widget.data.rangeDate != null) ...[
+                                TextSpan(
+                                  text: " ~ ",
+                                  style: context.textTheme.labelSmall?.copyWith(
+                                    color: context.colorTheme.onPrimary,
+                                  ),
+                                ),
                                 TextSpan(
                                   text: DateFormat("yyyy. MM. dd").format(
-                                    widget.data.dueDate!,
+                                    widget.data.rangeDate!.end!,
                                   ),
                                   style: context.textTheme.labelSmall?.copyWith(
                                     color: context.colorTheme.onPrimary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                              ] else
                                 TextSpan(
                                   text: " 까지",
                                   style: context.textTheme.labelSmall?.copyWith(
                                     color: context.colorTheme.onPrimary,
                                   ),
                                 ),
-                              ],
-                            ),
+                            ],
                           ),
                         ),
+                      ),
                     ],
                   ),
                 ),
