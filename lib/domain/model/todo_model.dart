@@ -5,7 +5,7 @@ final class Todo extends BaseData {
   final String title;
   final String content;
 
-  final DateTime? dateTime;
+  final DateTime? dueDate;
   final bool showNotification;
 
   final bool completed;
@@ -13,7 +13,7 @@ final class Todo extends BaseData {
   const Todo._({
     required this.id,
     required this.title,
-    required this.dateTime,
+    required this.dueDate,
     required this.content,
     required this.completed,
     required this.showNotification,
@@ -24,13 +24,13 @@ final class Todo extends BaseData {
   factory Todo.create({
     required String title,
     required String content,
-    required DateTime? dateTime,
+    required DateTime? dueDate,
     required bool showNotification,
   }) {
-    // dateTime should be converted to timestamp
+    // dueDate should be converted to timestamp
     late final int timestamp;
-    if (showNotification && dateTime != null) {
-      timestamp = dateTime.millisecondsSinceEpoch;
+    if (showNotification && dueDate != null) {
+      timestamp = dueDate.millisecondsSinceEpoch;
     } else {
       timestamp = DateTime.now().millisecondsSinceEpoch;
     }
@@ -42,7 +42,7 @@ final class Todo extends BaseData {
         id: id,
         title: title,
         content: content,
-        dateTime: dateTime,
+        dueDate: dueDate,
         completed: false,
         showNotification: showNotification);
   }
@@ -60,7 +60,7 @@ final class Todo extends BaseData {
       id: id,
       title: title ?? this.title,
       content: content ?? this.content,
-      dateTime: dateTime,
+      dueDate: dueDate,
       completed: completed ?? this.completed,
       showNotification: showNotification ?? this.showNotification,
     );
@@ -71,9 +71,9 @@ final class Todo extends BaseData {
       id: map['id'],
       title: map['title'],
       content: map['content'],
-      dateTime: map['dateTime'] == null
+      dueDate: map['dueDate'] == null
           ? null
-          : DateTime.fromMillisecondsSinceEpoch(map['dateTime']),
+          : DateTime.fromMillisecondsSinceEpoch(map['dueDate']),
       completed: map['completed'],
       showNotification: map['showNotification'],
     );
@@ -85,7 +85,7 @@ final class Todo extends BaseData {
       'id': id,
       'title': title,
       'content': content,
-      'dateTime': dateTime?.millisecondsSinceEpoch,
+      'dueDate': dueDate?.millisecondsSinceEpoch,
       'completed': completed,
       'showNotification': showNotification,
     };

@@ -36,20 +36,20 @@ class TodoListBloc extends Cubit<TodoListState> {
           completed: newValue,
           showNotification: newValue
               ? false
-              : newTodos[index].dateTime != null
+              : newTodos[index].dueDate != null
                   ? true
                   : false,
         );
         newTodos[index] = newTodo;
 
-        if (newTodo.dateTime != null &&
+        if (newTodo.dueDate != null &&
             !newTodo.completed &&
             newTodo.showNotification) {
           await NotificationService().scheduleNotification(
             id: id,
             title: newTodos[index].title,
             body: newTodos[index].content,
-            dateTime: newTodos[index].dateTime!,
+            dueDate: newTodos[index].dueDate!,
           );
         } else {
           await NotificationService().cancelScheduledNotification(id);

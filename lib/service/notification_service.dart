@@ -56,7 +56,7 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
-    required DateTime dateTime,
+    required DateTime dueDate,
   }) async {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -74,7 +74,7 @@ class NotificationService {
     );
 
     final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
-      DateTime(dateTime.year, dateTime.month, dateTime.day, 9),
+      DateTime(dueDate.year, dueDate.month, dueDate.day, 9),
       tz.local,
     );
 
