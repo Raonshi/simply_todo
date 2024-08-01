@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
@@ -54,13 +55,21 @@ class AddTodoBloc extends Cubit<AddTodoState> {
       showNotification: state.showNotification,
     );
 
-    if (todo.showNotification && todo.dueDate != null) {
-      await NotificationService().scheduleNotification(
+    if (kDebugMode) {
+      await NotificationService().testScheduleNotification(
         id: todo.id,
         title: todo.title,
         body: todo.content,
-        dueDate: todo.dueDate!,
       );
+    } else {
+      if (todo.showNotification && todo.dueDate != null) {
+        await NotificationService().scheduleNotification(
+          id: todo.id,
+          title: todo.title,
+          body: todo.content,
+          dueDate: todo.dueDate!,
+        );
+      }
     }
 
     await todoRepo.saveTodo(todo);

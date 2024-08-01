@@ -5,6 +5,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:simpletodo/bloc/add_todo/add_todo_bloc.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/theme.dart';
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
@@ -64,6 +65,7 @@ class _AddTodoPageBody extends StatelessWidget {
                     context.loaderOverlay.hide();
                     Navigator.of(context).pop();
                   }).catchError((err) {
+                    lgr.e(err, stackTrace: err.stackTrace);
                     final String errMsg = switch (err) {
                       CustomException exception => exception.message,
                       _ => "알 수 없는 오류가 발생했습니다.",
