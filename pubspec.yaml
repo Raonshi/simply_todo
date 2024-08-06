@@ -47,6 +47,7 @@ dependencies:
   loader_overlay: ^4.0.1
   easy_localization: ^3.0.7
   font_awesome_flutter: ^10.7.0
+  animate_do: ^3.3.4
 
 dev_dependencies:
   flutter_test:

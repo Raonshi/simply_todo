@@ -10,6 +10,8 @@ import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
 
+import '../widget/add_todo_app_bar.dart';
+
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
 
@@ -47,37 +49,26 @@ class _AddTodoPageBody extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text(
-            "할 일 추가",
-            style: context.textTheme.titleLarge,
-          ),
-          actions: [
-            IconButton(
-              iconSize: 32.0,
-              icon: const Icon(FontAwesomeIcons.check, size: 24.0),
-              onPressed: () {
-                if (formKey.currentState?.validate() ?? false) {
-                  context.loaderOverlay.show();
-                  context.read<AddTodoBloc>().createTodo().then((_) {
-                    context.loaderOverlay.hide();
-                    Navigator.of(context).pop();
-                  }).catchError((err) {
-                    lgr.e(err, stackTrace: err.stackTrace);
-                    final String errMsg = switch (err) {
-                      CustomException exception => exception.message,
-                      _ => "알 수 없는 오류가 발생했습니다.",
-                    };
+        appBar: AddTodoAppBar(
+          context: context,
+          onTapAdd: () {
+            if (formKey.currentState?.validate() ?? false) {
+              context.loaderOverlay.show();
+              context.read<AddTodoBloc>().createTodo().then((_) {
+                context.loaderOverlay.hide();
+                Navigator.of(context).pop();
+              }).catchError((err) {
+                lgr.e(err, stackTrace: err.stackTrace);
+                final String errMsg = switch (err) {
+                  CustomException exception => exception.message,
+                  _ => "알 수 없는 오류가 발생했습니다.",
+                };
 
-                    context.loaderOverlay.hide();
-                    showErrorSnackbar(context: context, msg: errMsg);
-                  });
-                }
-              },
-            ),
-            const SizedBox(width: 12.0),
-          ],
+                context.loaderOverlay.hide();
+                showErrorSnackbar(context: context, msg: errMsg);
+              });
+            }
+          },
         ),
         body: BlocBuilder<AddTodoBloc, AddTodoState>(
           builder: (context, state) {

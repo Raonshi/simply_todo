@@ -41,7 +41,7 @@ class _TodoListItemState extends State<TodoListItem> {
           SlidableAction(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             onPressed: (context) => widget.onTapDelete(),
-            icon: Icons.delete,
+            icon: FontAwesomeIcons.xmark,
             backgroundColor: context.colorTheme.error,
             foregroundColor: context.colorTheme.onError,
           ),
