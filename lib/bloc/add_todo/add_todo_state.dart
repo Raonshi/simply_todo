@@ -17,7 +17,7 @@ class AddTodoState {
     this.content = "",
     required this.dueDate,
     this.rangeDate,
-    this.showNotification = false,
+    this.showNotification = true,
     this.visibleScrollArrow = true,
     this.rangeSelection = false,
   });

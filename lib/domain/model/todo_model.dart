@@ -39,13 +39,14 @@ final class Todo extends BaseData {
     final int id = timestamp ~/ 1000;
 
     return Todo._(
-        id: id,
-        title: title,
-        content: content,
-        dueDate: dueDate,
-        rangeDate: rangeDate,
-        completed: false,
-        showNotification: showNotification);
+      id: id,
+      title: title,
+      content: content,
+      dueDate: dueDate,
+      rangeDate: rangeDate,
+      completed: false,
+      showNotification: showNotification,
+    );
   }
 
   /// Copy current Todo instance with new values.

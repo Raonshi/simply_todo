@@ -9,7 +9,6 @@ import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
@@ -154,32 +153,25 @@ class _AddTodoPageBody extends StatelessWidget {
                         ),
 
                         // Notification Switch
-                        Container(
-                          foregroundDecoration: BoxDecoration(
-                            color: isSameDay(state.dueDate, DateTime.now())
-                                ? context.colorTheme.surface.withOpacity(0.7)
-                                : Colors.transparent,
+                        SwitchListTile.adaptive(
+                          value: state.showNotification,
+                          visualDensity: VisualDensity.compact,
+                          activeColor: context.colorTheme.onPrimary,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 8.0),
+                          onChanged: (_) => context
+                              .read<AddTodoBloc>()
+                              .toggleShowNotification(),
+                          title: Text(
+                            "알림 설정",
+                            style: context.textTheme.titleSmall,
                           ),
-                          child: SwitchListTile.adaptive(
-                            value: state.showNotification,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: context.colorTheme.onPrimary,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 8.0),
-                            onChanged: (_) => context
-                                .read<AddTodoBloc>()
-                                .toggleShowNotification(),
-                            title: Text(
-                              "알림 설정",
-                              style: context.textTheme.titleSmall,
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Text(
-                                "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
-                                style: context.textTheme.bodyMedium!.copyWith(
-                                  color: context.colorTheme.onSurface,
-                                ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                color: context.colorTheme.onSurface,
                               ),
                             ),
                           ),
