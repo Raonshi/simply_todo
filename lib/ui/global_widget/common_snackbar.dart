@@ -51,7 +51,7 @@ void showErrorSnackbar({
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Icon(
-                Icons.dangerous_rounded,
+                FontAwesomeIcons.triangleExclamation,
                 size: 24.0,
                 color: context.colorTheme.onError,
               ),

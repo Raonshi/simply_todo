@@ -8,7 +8,7 @@ import 'package:simpletodo/ui/home/widget/todo_list_item.dart';
 class CompletedList extends StatelessWidget {
   const CompletedList({super.key, required this.todos});
 
-  final List<Todo> todos;
+  final List<TodoModel> todos;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class CompletedList extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: todos.length,
           itemBuilder: (context, index) {
-            final Todo todo = todos[index];
+            final TodoModel todo = todos[index];
             return TodoListItem(
               key: ValueKey(todo.id),
               data: todo,
