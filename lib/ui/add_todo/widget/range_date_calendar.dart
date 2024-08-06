@@ -11,9 +11,9 @@ class RangeDateCalendar extends StatelessWidget {
     required this.selectedDate,
   });
 
-  final RangeDate rangeDate;
+  final RangeDateModel rangeDate;
   final DateTime selectedDate;
-  final ValueChanged<RangeDate> onRangeSelected;
+  final ValueChanged<RangeDateModel> onRangeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class RangeDateCalendar extends StatelessWidget {
         return isSameDay(selectedDate, day);
       },
       onRangeSelected: (start, end, focusedDay) {
-        onRangeSelected(RangeDate(start: start, end: end));
+        onRangeSelected(RangeDateModel(start: start, end: end));
       },
     );
   }

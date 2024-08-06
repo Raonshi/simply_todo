@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/common/exception.dart';
+import 'package:simpletodo/domain/model/notification_payload_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
@@ -39,12 +40,12 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     final bool newValue = !state.rangeSelection;
     emit(state.copyWith(
       rangeSelection: newValue,
-      rangeDate: newValue ? RangeDate.create() : null,
+      rangeDate: newValue ? RangeDateModel.create() : null,
     ));
   }
 
-  void setRangeDate(RangeDate rangeDate) {
-    final RangeDate newRangeDate = RangeDate(
+  void setRangeDate(RangeDateModel rangeDate) {
+    final RangeDateModel newRangeDate = RangeDateModel(
       start: rangeDate.start,
       end: rangeDate.end,
     );
@@ -52,11 +53,12 @@ class AddTodoBloc extends Cubit<AddTodoState> {
   }
 
   Future<void> createTodo() async {
-    if (state.rangeSelection && state.rangeDate == null) {
+    if (state.rangeSelection &&
+        (state.rangeDate?.start == null || state.rangeDate?.end == null)) {
       throw CustomException("일정 기간을 설정해주세요!");
     }
 
-    final Todo todo = Todo.create(
+    final TodoModel todo = TodoModel.create(
       title: state.title,
       content: state.content,
       dueDate: state.dueDate,
@@ -66,12 +68,16 @@ class AddTodoBloc extends Cubit<AddTodoState> {
 
     if (todo.showNotification) {
       await NotificationService().scheduleNotification(
-        id: todo.id,
-        title: todo.title,
-        body: todo.content,
-        dueDate: state.rangeSelection
-            ? todo.rangeDate!.start ?? todo.dueDate
-            : todo.dueDate,
+        NotificationPayloadModel.create(
+          title: todo.title,
+          content: todo.content,
+          scheduledDate: state.rangeSelection
+              ? (todo.rangeDate?.start ?? todo.dueDate)
+              : todo.dueDate,
+          dueDate: state.rangeSelection
+              ? (todo.rangeDate?.end ?? todo.dueDate)
+              : todo.dueDate,
+        ),
       );
     }
 

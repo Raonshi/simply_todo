@@ -1,18 +1,17 @@
 import 'package:simpletodo/domain/model/todo_model.dart';
 
 interface class TodoRepository {
-  Future<void> saveTodoList(List<Todo> todos) async {
+  Future<void> saveTodoList(List<TodoModel> todos) async {
     throw UnimplementedError();
   }
 
-  Future<void> saveTodo(Todo todo) async {}
+  Future<void> saveTodo(TodoModel todo) async {}
 
-  Future<List<Todo>> getTodoList() async {
+  Future<List<TodoModel>> getTodoList() async {
     throw UnimplementedError();
   }
 
   Future<void> deleteTodo(int id) async {}
 
   Future<void> clearTodoList() async {}
-
 }

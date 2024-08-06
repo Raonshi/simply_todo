@@ -1,19 +1,19 @@
 import 'package:simpletodo/domain/model/base_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
 
-final class Todo extends BaseData {
+final class TodoModel extends BaseModel {
   final int id;
   final String title;
   final String content;
 
   final DateTime dueDate;
-  final RangeDate? rangeDate;
+  final RangeDateModel? rangeDate;
 
   final bool showNotification;
 
   final bool completed;
 
-  const Todo._({
+  const TodoModel._({
     required this.id,
     required this.title,
     required this.dueDate,
@@ -25,11 +25,11 @@ final class Todo extends BaseData {
 
   /// Create a new Todo instance.
   /// [id] is the timestamp in days.
-  factory Todo.create({
+  factory TodoModel.create({
     required String title,
     required String content,
     required DateTime dueDate,
-    required RangeDate? rangeDate,
+    required RangeDateModel? rangeDate,
     required bool showNotification,
   }) {
     // dueDate should be converted to timestamp
@@ -38,7 +38,7 @@ final class Todo extends BaseData {
     // id is the timestamp in seconds
     final int id = timestamp ~/ 1000;
 
-    return Todo._(
+    return TodoModel._(
       id: id,
       title: title,
       content: content,
@@ -52,13 +52,13 @@ final class Todo extends BaseData {
   /// Copy current Todo instance with new values.
   /// `id` and `timestamp` are not copied.
   @override
-  Todo copyWith({
+  TodoModel copyWith({
     String? title,
     String? content,
     bool? completed,
     bool? showNotification,
   }) {
-    return Todo._(
+    return TodoModel._(
       id: id,
       title: title ?? this.title,
       content: content ?? this.content,
@@ -69,14 +69,14 @@ final class Todo extends BaseData {
     );
   }
 
-  factory Todo.fromJson(Map<String, dynamic> map) {
-    return Todo._(
+  factory TodoModel.fromJson(Map<String, dynamic> map) {
+    return TodoModel._(
       id: map['id'],
       title: map['title'],
       content: map['content'],
       dueDate: DateTime.fromMillisecondsSinceEpoch(map['dueDate']),
       rangeDate: map['rangeDate'] != null
-          ? RangeDate.fromJson(map['rangeDate'])
+          ? RangeDateModel.fromJson(map['rangeDate'])
           : null,
       completed: map['completed'],
       showNotification: map['showNotification'],

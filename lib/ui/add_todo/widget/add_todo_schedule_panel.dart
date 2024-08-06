@@ -22,13 +22,13 @@ class AddTodoSchedulePanel extends StatelessWidget {
   final bool rangeSelection;
 
   final DateTime selectedDay;
-  final RangeDate? rangeDate;
+  final RangeDateModel? rangeDate;
 
   final VoidCallback onTapNotiSwitch;
   final VoidCallback onTapRangeDateSwitch;
 
   final ValueChanged<DateTime> onDaySelected;
-  final ValueChanged<RangeDate> onRangeSelected;
+  final ValueChanged<RangeDateModel> onRangeSelected;
 
   @override
   Widget build(BuildContext context) {

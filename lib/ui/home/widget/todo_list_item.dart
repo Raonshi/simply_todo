@@ -13,7 +13,7 @@ class TodoListItem extends StatefulWidget {
     required this.onTapDelete,
   });
 
-  final Todo data;
+  final TodoModel data;
 
   final VoidCallback onTapCheckbox;
   final VoidCallback onTapDelete;

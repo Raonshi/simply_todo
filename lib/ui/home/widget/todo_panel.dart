@@ -8,13 +8,14 @@ import 'incompleted_list.dart';
 class TodoPanel extends StatelessWidget {
   const TodoPanel({super.key, required this.todos, required this.onRefresh});
 
-  final List<Todo> todos;
+  final List<TodoModel> todos;
   final VoidCallback onRefresh;
 
   @override
   Widget build(BuildContext context) {
-    final List<Todo> completes = todos.where((e) => e.completed).toList();
-    final List<Todo> incompletes = todos.where((e) => !e.completed).toList();
+    final List<TodoModel> completes = todos.where((e) => e.completed).toList();
+    final List<TodoModel> incompletes =
+        todos.where((e) => !e.completed).toList();
 
     return todos.isEmpty
         ? Center(

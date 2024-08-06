@@ -1,21 +1,21 @@
 import 'base_model.dart';
 
-final class RangeDate implements BaseData {
+final class RangeDateModel extends BaseModel {
   final DateTime? start;
   final DateTime? end;
 
-  const RangeDate({
+  const RangeDateModel({
     required this.start,
     required this.end,
   });
 
-  factory RangeDate.create() => RangeDate(
+  factory RangeDateModel.create() => RangeDateModel(
         start: DateTime.now(),
         end: null,
       );
 
-  factory RangeDate.fromJson(Map<String, dynamic> json) {
-    return RangeDate(
+  factory RangeDateModel.fromJson(Map<String, dynamic> json) {
+    return RangeDateModel(
       start: json.containsKey("start")
           ? DateTime.fromMillisecondsSinceEpoch(json["start"])
           : null,
@@ -26,11 +26,11 @@ final class RangeDate implements BaseData {
   }
 
   @override
-  RangeDate copyWith({
+  RangeDateModel copyWith({
     DateTime? start,
     DateTime? end,
   }) {
-    return RangeDate(
+    return RangeDateModel(
       start: start ?? this.start,
       end: end ?? this.end,
     );

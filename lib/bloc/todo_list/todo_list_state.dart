@@ -25,13 +25,13 @@ class TodoListLoading extends TodoListState {
 }
 
 class TodoListLoaded extends TodoListState {
-  final List<Todo> todos;
+  final List<TodoModel> todos;
 
   const TodoListLoaded(this.todos);
 
   @override
   TodoListState copyWith({
-    List<Todo>? todos,
+    List<TodoModel>? todos,
   }) {
     return TodoListLoaded(
       todos ?? this.todos,

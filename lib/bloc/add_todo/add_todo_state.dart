@@ -5,7 +5,7 @@ class AddTodoState {
   final String title;
   final String content;
   final DateTime dueDate;
-  final RangeDate? rangeDate;
+  final RangeDateModel? rangeDate;
   final bool showNotification;
 
   /* UI States */
@@ -28,7 +28,7 @@ class AddTodoState {
     DateTime? dueDate,
     bool? showNotification,
     bool? visibleScrollArrow,
-    RangeDate? rangeDate,
+    RangeDateModel? rangeDate,
     bool? rangeSelection,
   }) {
     return AddTodoState(
