@@ -1,5 +1,7 @@
 flutter_launcher_icons:
-  android: true
-  ios: true
-  remove_alpha_ios: true
   image_path: "asset/icon/app_icon.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  remove_alpha_ios: true
+  min_sdk_android: 21 
+  background_color_ios: "#000000"

@@ -3,14 +3,14 @@ part of 'add_todo_bloc.dart';
 class AddTodoState {
   final String title;
   final String content;
-  final DateTime? dateTime;
+  final DateTime? dueDate;
   final bool showNotification;
   final bool visibleScrollArrow;
 
   const AddTodoState({
     this.title = "",
     this.content = "",
-    this.dateTime,
+    this.dueDate,
     this.showNotification = true,
     this.visibleScrollArrow = true,
   });
@@ -18,14 +18,14 @@ class AddTodoState {
   AddTodoState copyWith({
     String? title,
     String? content,
-    DateTime? dateTime,
+    DateTime? dueDate,
     bool? showNotification,
     bool? visibleScrollArrow,
   }) {
     return AddTodoState(
       title: title ?? this.title,
       content: content ?? this.content,
-      dateTime: dateTime ?? this.dateTime,
+      dueDate: dueDate ?? this.dueDate,
       showNotification: showNotification ?? this.showNotification,
       visibleScrollArrow: visibleScrollArrow ?? this.visibleScrollArrow,
     );
@@ -33,6 +33,6 @@ class AddTodoState {
 
   @override
   String toString() {
-    return 'AddTodoState{title: $title, content: $content, dateTime: $dateTime, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow}';
+    return 'AddTodoState{title: $title, content: $content, dueDate: $dueDate, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow}';
   }
 }

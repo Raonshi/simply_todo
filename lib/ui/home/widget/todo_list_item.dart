@@ -123,7 +123,7 @@ class _TodoListItemState extends State<TodoListItem> {
 
                       // Notification Date Time
                       if (widget.data.showNotification &&
-                          widget.data.dateTime != null)
+                          widget.data.dueDate != null)
                         Container(
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 4.0),
@@ -132,7 +132,7 @@ class _TodoListItemState extends State<TodoListItem> {
                               children: [
                                 TextSpan(
                                   text: DateFormat("yyyy. MM. dd").format(
-                                    widget.data.dateTime!,
+                                    widget.data.dueDate!,
                                   ),
                                   style: context.textTheme.labelSmall?.copyWith(
                                     color: context.colorTheme.onPrimary,

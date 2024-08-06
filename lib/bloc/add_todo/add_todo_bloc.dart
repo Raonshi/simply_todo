@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
@@ -12,7 +13,7 @@ class AddTodoBloc extends Cubit<AddTodoState> {
 
   AddTodoBloc({
     required this.todoRepo,
-  }) : super(const AddTodoState());
+  }) : super(AddTodoState(dueDate: DateTime.now()));
 
   void setVisibleScrollArrow(bool dismissable) {
     emit(state.copyWith(visibleScrollArrow: !dismissable));
@@ -26,19 +27,13 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     emit(state.copyWith(content: content));
   }
 
-  void setDateTime(DateTime dateTime) {
-    emit(state.copyWith(dateTime: dateTime));
+  void setDateTime(DateTime dueDate) {
+    emit(state.copyWith(dueDate: dueDate));
   }
 
   void toggleShowNotification() {
     final bool newValue = !state.showNotification;
-    emit(
-      state.copyWith(
-        showNotification: newValue,
-        visibleScrollArrow: newValue == false ? false : true,
-        dateTime: null,
-      ),
-    );
+    emit(state.copyWith(showNotification: newValue));
   }
 
   @override
@@ -49,23 +44,23 @@ class AddTodoBloc extends Cubit<AddTodoState> {
   }
 
   Future<void> createTodo() async {
-    if (state.showNotification && state.dateTime == null) {
+    if (state.showNotification && state.dueDate == null) {
       throw CustomException("알림 날짜를 설정해주세요!");
     }
 
     final Todo todo = Todo.create(
       title: state.title,
       content: state.content,
-      dateTime: state.dateTime,
+      dueDate: state.dueDate,
       showNotification: state.showNotification,
     );
 
-    if (todo.showNotification && todo.dateTime != null) {
+    if (todo.showNotification && todo.dueDate != null) {
       await NotificationService().scheduleNotification(
         id: todo.id,
         title: todo.title,
         body: todo.content,
-        dateTime: todo.dateTime!,
+        dueDate: todo.dueDate!,
       );
     }
 

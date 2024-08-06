@@ -20,26 +20,16 @@ class AddTodoSchedulePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SwitchListTile.adaptive(
-          value: showNotification,
-          visualDensity: VisualDensity.compact,
-          activeColor: context.colorTheme.onPrimary,
-          onChanged: (_) => onTapNotiSwitch(),
-          title: Text(
-            "알림 설정",
-            style: context.textTheme.labelLarge,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "디데이 설정",
+            style: context.textTheme.titleSmall,
           ),
-          subtitle: Text(
-            "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
-            style: context.textTheme.bodySmall!.copyWith(
-              color: context.colorTheme.onSurface,
-            ),
-          ),
-        ),
-        if (showNotification) ...[
-          const SizedBox(height: 12.0),
+          const SizedBox(height: 24.0),
           TableCalendar(
             headerStyle: HeaderStyle(
               formatButtonVisible: false,
@@ -53,6 +43,9 @@ class AddTodoSchedulePanel extends StatelessWidget {
                 bottom: 20.0,
               ),
               titleTextStyle: context.textTheme.titleSmall!,
+              titleTextFormatter: (date, locale) {
+                return "${date.year}년 ${date.month}월";
+              },
             ),
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: context.textTheme.labelMedium!,
@@ -89,7 +82,7 @@ class AddTodoSchedulePanel extends StatelessWidget {
             ),
             focusedDay:
                 selectedDay ?? DateTime.now().add(const Duration(days: 1)),
-            firstDay: DateTime.now().add(const Duration(days: 1)),
+            firstDay: DateTime.now(),
             lastDay: DateTime.now().add(const Duration(days: 365)),
             selectedDayPredicate: (day) {
               return isSameDay(selectedDay, day);
@@ -100,7 +93,7 @@ class AddTodoSchedulePanel extends StatelessWidget {
             },
           ),
         ],
-      ],
+      ),
     );
   }
 }

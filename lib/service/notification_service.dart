@@ -13,7 +13,7 @@ class NotificationService {
 
   InitializationSettings get _initializationSettings =>
       const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings('@mipmap/ic_launcher_foreground'),
         iOS: DarwinInitializationSettings(),
       );
 
@@ -56,7 +56,7 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
-    required DateTime dateTime,
+    required DateTime dueDate,
   }) async {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -74,7 +74,48 @@ class NotificationService {
     );
 
     final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
-      DateTime(dateTime.year, dateTime.month, dateTime.day, 9),
+      DateTime(dueDate.year, dueDate.month, dueDate.day, 9),
+      tz.local,
+    );
+
+    await _notiPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      timeZoneDate,
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+
+    _notiPlugin.pendingNotificationRequests().then((value) {
+      lgr.d('Pending notifications: ${value.map((e) => e.title)}');
+    });
+  }
+
+  Future<void> testScheduleNotification({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'com.raondev.simplytodo.todo',
+        '일정 알림',
+        channelDescription: '심플리투두 앱의 일정 알림입니다.',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+
+    final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
+      DateTime.now().add(const Duration(seconds: 5)),
       tz.local,
     );
 
