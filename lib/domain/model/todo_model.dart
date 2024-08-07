@@ -1,3 +1,4 @@
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/base_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
 
@@ -32,14 +33,8 @@ final class TodoModel extends BaseModel {
     required RangeDateModel? rangeDate,
     required bool showNotification,
   }) {
-    // dueDate should be converted to timestamp
-    final int timestamp = dueDate.millisecondsSinceEpoch;
-
-    // id is the timestamp in seconds
-    final int id = timestamp ~/ 1000;
-
     return TodoModel._(
-      id: id,
+      id: uuid.v4().hashCode,
       title: title,
       content: content,
       dueDate: dueDate,

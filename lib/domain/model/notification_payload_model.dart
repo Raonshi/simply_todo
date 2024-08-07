@@ -1,3 +1,4 @@
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/base_model.dart';
 
 class NotificationPayloadModel extends BaseModel {
@@ -22,11 +23,8 @@ class NotificationPayloadModel extends BaseModel {
     required DateTime scheduledDate,
     required DateTime dueDate,
   }) {
-    final int timestamp = dueDate.millisecondsSinceEpoch;
-    final int id = timestamp ~/ 1000;
-
     return NotificationPayloadModel._(
-      id: id,
+      id: uuid.v4().hashCode,
       title: title,
       content: content,
       scheduledDate: DateTime(
