@@ -157,8 +157,8 @@ class _HomePageBodyState extends State<_HomePageBody> {
         unselectedItemColor: context.colorTheme.outline,
         showUnselectedLabels: false,
         showSelectedLabels: false,
-        selectedIconTheme: IconThemeData(size: 28.0),
-        unselectedIconTheme: IconThemeData(size: 24.0),
+        selectedIconTheme: const IconThemeData(size: 28.0),
+        unselectedIconTheme: const IconThemeData(size: 24.0),
         onTap: (value) {
           setState(() => _currentIndex = value);
           _pageController.animateToPage(

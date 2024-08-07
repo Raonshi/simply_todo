@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -41,6 +41,16 @@ class EventCalendar extends StatelessWidget {
           return "${date.year}년 ${date.month}월";
         },
         formatButtonShowsNext: false,
+        formatButtonDecoration: BoxDecoration(
+          color: context.colorTheme.primary,
+          border: Border.all(color: context.colorTheme.onPrimary, width: 1.0),
+          borderRadius: BorderRadius.circular(99.0),
+        ),
+        formatButtonTextStyle: context.textTheme.labelMedium!.copyWith(
+          color: context.colorTheme.onPrimary,
+        ),
+        leftChevronIcon: const Icon(FontAwesomeIcons.chevronLeft, size: 20.0),
+        rightChevronIcon: const Icon(FontAwesomeIcons.chevronRight, size: 20.0),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
         weekdayStyle: context.textTheme.labelMedium!,
@@ -83,7 +93,7 @@ class EventCalendar extends StatelessWidget {
       rangeSelectionMode: RangeSelectionMode.disabled,
       focusedDay: selectedDay,
       firstDay: DateTime.now(),
-      lastDay: DateTime.now().add(const Duration(days: 365)),
+      lastDay: DateTime.now().add(const Duration(days: 730)),
       selectedDayPredicate: (day) {
         return isSameDay(selectedDay, day);
       },
