@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/common/exception.dart';
+import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/notification_payload_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
@@ -67,6 +68,12 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     );
 
     if (todo.showNotification) {
+      final DateTime todayNotiTime = DateTime(now.year, now.month, now.day);
+
+      if (todo.dueDate.difference(todayNotiTime).inDays == 0) {
+        throw CustomException("알림 설정을 선택한 경우, 오늘 이후 날짜로 설정해주세요!");
+      }
+
       await NotificationService().scheduleNotification(
         NotificationPayloadModel.create(
           title: todo.title,

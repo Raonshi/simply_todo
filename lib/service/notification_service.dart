@@ -141,7 +141,7 @@ class NotificationService {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'com.raondev.simplytodo.todo',
-        '일정 알림',
+        '심플리투두',
         channelDescription: '심플리투두 앱의 일정 알림입니다.',
         importance: Importance.max,
         priority: Priority.high,
