@@ -9,6 +9,8 @@ import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
 
+import '../widget/add_todo_app_bar.dart';
+
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
 
@@ -39,43 +41,34 @@ class _AddTodoPageBody extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
     scrollController.addListener(() {
       final bool dismissArrow =
-          scrollController.offset > (MediaQuery.of(context).size.height * 0.2);
+          scrollController.position.pixels <= 0 ? false : true;
       context.read<AddTodoBloc>().setVisibleScrollArrow(dismissArrow);
     });
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text(
-            "할 일 추가",
-            style: context.textTheme.titleLarge,
-          ),
-          actions: [
-            IconButton(
-              iconSize: 32.0,
-              icon: const Icon(FontAwesomeIcons.check, size: 24.0),
-              onPressed: () {
-                if (formKey.currentState?.validate() ?? false) {
-                  context.loaderOverlay.show();
-                  context.read<AddTodoBloc>().createTodo().then((_) {
-                    context.loaderOverlay.hide();
-                    Navigator.of(context).pop();
-                  }).catchError((err) {
-                    final String errMsg = switch (err) {
-                      CustomException exception => exception.message,
-                      _ => "알 수 없는 오류가 발생했습니다.",
-                    };
+        appBar: AddTodoAppBar(
+          context: context,
+          onTapAdd: () {
+            if (formKey.currentState?.validate() ?? false) {
+              context.loaderOverlay.show();
+              context.read<AddTodoBloc>().createTodo().then((_) {
+                context.loaderOverlay.hide();
+                Navigator.of(context).pop();
+              }).catchError((err) {
+                final String errMsg = switch (err) {
+                  CustomException exception => exception.message,
+                  _ => "알 수 없는 오류가 발생했습니다.",
+                };
 
-                    context.loaderOverlay.hide();
-                    showErrorSnackbar(context: context, msg: errMsg);
-                  });
-                }
-              },
-            ),
-            const SizedBox(width: 12.0),
-          ],
+                context.loaderOverlay.hide();
+                showErrorSnackbar(context: context, msg: errMsg);
+              });
+            } else {
+              showErrorSnackbar(context: context, msg: "제목을 입력해주세요!");
+            }
+          },
         ),
         body: BlocBuilder<AddTodoBloc, AddTodoState>(
           builder: (context, state) {
@@ -98,7 +91,7 @@ class _AddTodoPageBody extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: "제목",
                               labelStyle:
-                                  context.textTheme.labelLarge?.copyWith(
+                                  context.textTheme.titleSmall?.copyWith(
                                 color: context.colorTheme.onPrimary,
                               ),
                               focusedBorder: UnderlineInputBorder(
@@ -130,7 +123,7 @@ class _AddTodoPageBody extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: "내용",
                               labelStyle:
-                                  context.textTheme.labelLarge?.copyWith(
+                                  context.textTheme.titleSmall?.copyWith(
                                 color: context.colorTheme.onPrimary,
                               ),
                               focusedBorder: UnderlineInputBorder(
@@ -149,9 +142,40 @@ class _AddTodoPageBody extends StatelessWidget {
                           thickness: 4.0,
                           color: context.colorTheme.onSurface.withOpacity(0.08),
                         ),
-                        const SizedBox(height: 12.0),
 
-                        // Notification / Date
+                        // Notification Switch
+                        SwitchListTile.adaptive(
+                          value: state.showNotification,
+                          visualDensity: VisualDensity.compact,
+                          activeColor: context.colorTheme.onPrimary,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 8.0),
+                          onChanged: (_) => context
+                              .read<AddTodoBloc>()
+                              .toggleShowNotification(),
+                          title: Text(
+                            "알림 설정",
+                            style: context.textTheme.titleSmall,
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                color: context.colorTheme.onSurface,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Divider(
+                          height: 4.0,
+                          thickness: 4.0,
+                          color: context.colorTheme.onSurface.withOpacity(0.08),
+                        ),
+                        const SizedBox(height: 24.0),
+
+                        // Calendar
                         AddTodoSchedulePanel(
                           showNotification: state.showNotification,
                           onTapNotiSwitch: context
@@ -159,7 +183,13 @@ class _AddTodoPageBody extends StatelessWidget {
                               .toggleShowNotification,
                           onDaySelected:
                               context.read<AddTodoBloc>().setDateTime,
-                          selectedDay: state.dateTime,
+                          selectedDay: state.dueDate,
+                          rangeDate: state.rangeDate,
+                          rangeSelection: state.rangeSelection,
+                          onTapRangeDateSwitch:
+                              context.read<AddTodoBloc>().toggleSwitchRangeDate,
+                          onRangeSelected:
+                              context.read<AddTodoBloc>().setRangeDate,
                         ),
 
                         const SizedBox(height: 64.0),
@@ -173,26 +203,24 @@ class _AddTodoPageBody extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
+                        stops: const [0.0, 0.2, 1.0],
                         colors: [
                           Colors.white.withOpacity(0.1),
-                          Colors.white.withOpacity(0.35),
-                          Colors.white.withOpacity(0.7),
+                          Colors.white.withOpacity(0.5),
                           Colors.white,
                         ],
                       ),
                     ),
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(vertical: 24.0),
                     child: InkWell(
                       onTap: () => scrollController.animateTo(
                         MediaQuery.of(context).size.height,
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.fastOutSlowIn,
                       ),
-                      child: Icon(
-                        FontAwesomeIcons.chevronDown,
-                        color: context.colorTheme.onSurface,
-                      ),
+                      child: Icon(FontAwesomeIcons.chevronDown,
+                          color: context.colorTheme.onSurface, size: 20.0),
                     ),
                   ),
               ],

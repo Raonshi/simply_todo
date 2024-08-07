@@ -1,38 +1,61 @@
 part of 'add_todo_bloc.dart';
 
 class AddTodoState {
+  /* Todo data states */
   final String title;
   final String content;
-  final DateTime? dateTime;
+  final DateTime dueDate;
+  final RangeDateModel? rangeDate;
   final bool showNotification;
+
+  /* UI States */
   final bool visibleScrollArrow;
+  final bool rangeSelection;
 
   const AddTodoState({
     this.title = "",
     this.content = "",
-    this.dateTime,
+    required this.dueDate,
+    this.rangeDate,
     this.showNotification = true,
     this.visibleScrollArrow = true,
+    this.rangeSelection = false,
   });
 
   AddTodoState copyWith({
     String? title,
     String? content,
-    DateTime? dateTime,
+    DateTime? dueDate,
     bool? showNotification,
     bool? visibleScrollArrow,
+    RangeDateModel? rangeDate,
+    bool? rangeSelection,
   }) {
     return AddTodoState(
       title: title ?? this.title,
       content: content ?? this.content,
-      dateTime: dateTime ?? this.dateTime,
+      dueDate: dueDate ?? this.dueDate,
+      rangeDate: rangeDate ?? this.rangeDate,
       showNotification: showNotification ?? this.showNotification,
       visibleScrollArrow: visibleScrollArrow ?? this.visibleScrollArrow,
+      rangeSelection: rangeSelection ?? this.rangeSelection,
+    );
+  }
+
+  AddTodoState removeRangeDate() {
+    return AddTodoState(
+      title: title,
+      content: content,
+      dueDate: DateTime.now(),
+      rangeDate: null,
+      showNotification: showNotification,
+      visibleScrollArrow: visibleScrollArrow,
+      rangeSelection: false,
     );
   }
 
   @override
   String toString() {
-    return 'AddTodoState{title: $title, content: $content, dateTime: $dateTime, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow}';
+    return "AddTodoState{title: $title, content: $content, dueDate: $dueDate, rangeDate: ${rangeDate.toString()}, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow, rangeSelection: $rangeSelection}";
   }
 }
