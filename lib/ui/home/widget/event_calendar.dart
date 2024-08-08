@@ -107,8 +107,10 @@ class EventCalendar extends StatelessWidget {
       eventLoader: (day) {
         return todos.where((e) {
           if (e.rangeDate != null) {
-            return (e.rangeDate!.start?.isBefore(day) ?? false) &&
-                (e.rangeDate!.end?.isAfter(day) ?? false);
+            return (isSameDay(e.rangeDate!.start, day) ||
+                    isSameDay(e.rangeDate!.end, day)) ||
+                ((e.rangeDate!.start?.isBefore(day) ?? false) &&
+                    (e.rangeDate!.end?.isAfter(day) ?? false));
           } else {
             return isSameDay(e.dueDate, day);
           }
