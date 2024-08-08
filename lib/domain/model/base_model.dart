@@ -1,12 +1,13 @@
-abstract class BaseData {
-  const BaseData();
+abstract class BaseModel {
+  const BaseModel();
 
   Map<String, dynamic> toMap();
 
-  BaseData copyWith();
+  BaseModel copyWith() {
+    throw UnimplementedError();
+  }
+  
 
   @override
-  String toString() {
-    return toMap().toString();
-  }
+  String toString() => toMap().toString();
 }

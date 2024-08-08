@@ -5,11 +5,11 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:simpletodo/bloc/add_todo/add_todo_bloc.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
-import 'package:table_calendar/table_calendar.dart';
+
+import '../widget/add_todo_app_bar.dart';
 
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
@@ -48,37 +48,27 @@ class _AddTodoPageBody extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          title: Text(
-            "할 일 추가",
-            style: context.textTheme.titleLarge,
-          ),
-          actions: [
-            IconButton(
-              iconSize: 32.0,
-              icon: const Icon(FontAwesomeIcons.check, size: 24.0),
-              onPressed: () {
-                if (formKey.currentState?.validate() ?? false) {
-                  context.loaderOverlay.show();
-                  context.read<AddTodoBloc>().createTodo().then((_) {
-                    context.loaderOverlay.hide();
-                    Navigator.of(context).pop();
-                  }).catchError((err) {
-                    lgr.e(err, stackTrace: err.stackTrace);
-                    final String errMsg = switch (err) {
-                      CustomException exception => exception.message,
-                      _ => "알 수 없는 오류가 발생했습니다.",
-                    };
+        appBar: AddTodoAppBar(
+          context: context,
+          onTapAdd: () {
+            if (formKey.currentState?.validate() ?? false) {
+              context.loaderOverlay.show();
+              context.read<AddTodoBloc>().createTodo().then((_) {
+                context.loaderOverlay.hide();
+                Navigator.of(context).pop();
+              }).catchError((err) {
+                final String errMsg = switch (err) {
+                  CustomException exception => exception.message,
+                  _ => "알 수 없는 오류가 발생했습니다.",
+                };
 
-                    context.loaderOverlay.hide();
-                    showErrorSnackbar(context: context, msg: errMsg);
-                  });
-                }
-              },
-            ),
-            const SizedBox(width: 12.0),
-          ],
+                context.loaderOverlay.hide();
+                showErrorSnackbar(context: context, msg: errMsg);
+              });
+            } else {
+              showErrorSnackbar(context: context, msg: "제목을 입력해주세요!");
+            }
+          },
         ),
         body: BlocBuilder<AddTodoBloc, AddTodoState>(
           builder: (context, state) {
@@ -152,32 +142,27 @@ class _AddTodoPageBody extends StatelessWidget {
                           thickness: 4.0,
                           color: context.colorTheme.onSurface.withOpacity(0.08),
                         ),
-                        Container(
-                          foregroundDecoration: BoxDecoration(
-                            color: isSameDay(state.dueDate, DateTime.now())
-                                ? context.colorTheme.surface.withOpacity(0.7)
-                                : Colors.transparent,
+
+                        // Notification Switch
+                        SwitchListTile.adaptive(
+                          value: state.showNotification,
+                          visualDensity: VisualDensity.compact,
+                          activeColor: context.colorTheme.onPrimary,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 8.0),
+                          onChanged: (_) => context
+                              .read<AddTodoBloc>()
+                              .toggleShowNotification(),
+                          title: Text(
+                            "알림 설정",
+                            style: context.textTheme.titleSmall,
                           ),
-                          child: SwitchListTile.adaptive(
-                            value: state.showNotification,
-                            visualDensity: VisualDensity.compact,
-                            activeColor: context.colorTheme.onPrimary,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 8.0),
-                            onChanged: (_) => context
-                                .read<AddTodoBloc>()
-                                .toggleShowNotification(),
-                            title: Text(
-                              "알림 설정",
-                              style: context.textTheme.titleSmall,
-                            ),
-                            subtitle: Padding(
-                              padding: EdgeInsets.only(top: 4.0),
-                              child: Text(
-                                "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
-                                style: context.textTheme.bodyMedium!.copyWith(
-                                  color: context.colorTheme.onSurface,
-                                ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              "알림은 선택한 날짜의 09:00 AM에 발송됩니다.",
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                color: context.colorTheme.onSurface,
                               ),
                             ),
                           ),
@@ -190,7 +175,7 @@ class _AddTodoPageBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 24.0),
 
-                        // Notification / Date
+                        // Calendar
                         AddTodoSchedulePanel(
                           showNotification: state.showNotification,
                           onTapNotiSwitch: context
@@ -199,6 +184,12 @@ class _AddTodoPageBody extends StatelessWidget {
                           onDaySelected:
                               context.read<AddTodoBloc>().setDateTime,
                           selectedDay: state.dueDate,
+                          rangeDate: state.rangeDate,
+                          rangeSelection: state.rangeSelection,
+                          onTapRangeDateSwitch:
+                              context.read<AddTodoBloc>().toggleSwitchRangeDate,
+                          onRangeSelected:
+                              context.read<AddTodoBloc>().setRangeDate,
                         ),
 
                         const SizedBox(height: 64.0),

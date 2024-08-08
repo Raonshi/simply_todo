@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
+import 'package:simpletodo/domain/model/notification_payload_model.dart';
+import 'package:simpletodo/domain/model/range_date_model.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
 import 'package:simpletodo/service/notification_service.dart';
@@ -36,31 +37,54 @@ class AddTodoBloc extends Cubit<AddTodoState> {
     emit(state.copyWith(showNotification: newValue));
   }
 
-  @override
-  void onChange(Change<AddTodoState> change) {
-    lgr.d("CURRENT STATE : ${change.currentState.toString()}\n"
-        "NEXT STATE : ${change.nextState.toString()}");
-    super.onChange(change);
+  void toggleSwitchRangeDate() {
+    final bool newValue = !state.rangeSelection;
+    emit(state.copyWith(
+      rangeSelection: newValue,
+      rangeDate: newValue ? RangeDateModel.create() : null,
+    ));
+  }
+
+  void setRangeDate(RangeDateModel rangeDate) {
+    final RangeDateModel newRangeDate = RangeDateModel(
+      start: rangeDate.start,
+      end: rangeDate.end,
+    );
+    emit(state.copyWith(rangeDate: newRangeDate, dueDate: newRangeDate.start));
   }
 
   Future<void> createTodo() async {
-    if (state.showNotification && state.dueDate == null) {
-      throw CustomException("알림 날짜를 설정해주세요!");
+    if (state.rangeSelection &&
+        (state.rangeDate?.start == null || state.rangeDate?.end == null)) {
+      throw CustomException("일정 기간을 설정해주세요!");
     }
 
-    final Todo todo = Todo.create(
+    final TodoModel todo = TodoModel.create(
       title: state.title,
       content: state.content,
       dueDate: state.dueDate,
+      rangeDate: state.rangeDate,
       showNotification: state.showNotification,
     );
 
-    if (todo.showNotification && todo.dueDate != null) {
+    if (todo.showNotification) {
+      final DateTime todayNotiTime = DateTime(now.year, now.month, now.day);
+
+      if (todo.dueDate.difference(todayNotiTime).inDays == 0) {
+        throw CustomException("알림 설정을 선택한 경우, 오늘 이후 날짜로 설정해주세요!");
+      }
+
       await NotificationService().scheduleNotification(
-        id: todo.id,
-        title: todo.title,
-        body: todo.content,
-        dueDate: todo.dueDate!,
+        NotificationPayloadModel.create(
+          title: todo.title,
+          content: todo.content,
+          scheduledDate: state.rangeSelection
+              ? (todo.rangeDate?.start ?? todo.dueDate)
+              : todo.dueDate,
+          dueDate: state.rangeSelection
+              ? (todo.rangeDate?.end ?? todo.dueDate)
+              : todo.dueDate,
+        ),
       );
     }
 
