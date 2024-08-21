@@ -56,16 +56,53 @@ class NotificationService {
     }
   }
 
-  // Future<void> scheduleNotification({
+  Future<void> scheduleNotification(
+      NotificationPayloadModel notification) async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'com.raondev.simplytodo.todo',
+        '일정 알림',
+        channelDescription: '심플리투두 앱의 일정 알림입니다.',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+
+    final tz.TZDateTime scheduledDate =
+        tz.TZDateTime.from(notification.scheduledDate, tz.local);
+
+    await _notiPlugin.zonedSchedule(
+      notification.id,
+      notification.title,
+      notification.content,
+      scheduledDate,
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: jsonEncode(notification.toMap()),
+    );
+
+    _notiPlugin.pendingNotificationRequests().then((value) {
+      lgr.d('Pending notifications: ${value.map((e) => e.title)}');
+    });
+  }
+
+  // /// TEST function to schedule notification after 5 seconds.
+  // Future<void> testScheduleNotification({
   //   required int id,
   //   required String title,
   //   required String body,
-  //   required DateTime dueDate,
   // }) async {
   //   const NotificationDetails notificationDetails = NotificationDetails(
   //     android: AndroidNotificationDetails(
   //       'com.raondev.simplytodo.todo',
-  //       '일정 알림',
+  //       '심플리투두',
   //       channelDescription: '심플리투두 앱의 일정 알림입니다.',
   //       importance: Importance.max,
   //       priority: Priority.high,
@@ -78,7 +115,7 @@ class NotificationService {
   //   );
 
   //   final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
-  //     DateTime(dueDate.year, dueDate.month, dueDate.day, 9),
+  //     DateTime.now().add(const Duration(seconds: 5)),
   //     tz.local,
   //   );
 
@@ -97,82 +134,6 @@ class NotificationService {
   //     lgr.d('Pending notifications: ${value.map((e) => e.title)}');
   //   });
   // }
-
-  Future<void> scheduleNotification(
-      NotificationPayloadModel notification) async {
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'com.raondev.simplytodo.todo',
-        '일정 알림',
-        channelDescription: '심플리투두 앱의 일정 알림입니다.',
-        importance: Importance.max,
-        priority: Priority.high,
-      ),
-      iOS: DarwinNotificationDetails(
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true,
-      ),
-    );
-
-    await _notiPlugin.zonedSchedule(
-      notification.id,
-      notification.title,
-      notification.content,
-      tz.TZDateTime.from(notification.dueDate, tz.local),
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      payload: jsonEncode(notification.toMap()),
-    );
-
-    _notiPlugin.pendingNotificationRequests().then((value) {
-      lgr.d('Pending notifications: ${value.map((e) => e.title)}');
-    });
-  }
-
-  /// TEST function to schedule notification after 5 seconds.
-  Future<void> testScheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-  }) async {
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-        'com.raondev.simplytodo.todo',
-        '심플리투두',
-        channelDescription: '심플리투두 앱의 일정 알림입니다.',
-        importance: Importance.max,
-        priority: Priority.high,
-      ),
-      iOS: DarwinNotificationDetails(
-        presentAlert: true,
-        presentBadge: true,
-        presentSound: true,
-      ),
-    );
-
-    final tz.TZDateTime timeZoneDate = tz.TZDateTime.from(
-      DateTime.now().add(const Duration(seconds: 5)),
-      tz.local,
-    );
-
-    await _notiPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      timeZoneDate,
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
-
-    _notiPlugin.pendingNotificationRequests().then((value) {
-      lgr.d('Pending notifications: ${value.map((e) => e.title)}');
-    });
-  }
 
   /// Remove scheduled notification with [id].
   Future<void> cancelScheduledNotification(int id) async {
