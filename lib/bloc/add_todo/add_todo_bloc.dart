@@ -3,6 +3,7 @@ import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/notification_payload_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
+import 'package:simpletodo/domain/model/tag_model.dart';
 import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
 import 'package:simpletodo/service/notification_service.dart';
@@ -51,6 +52,24 @@ class AddTodoBloc extends Cubit<AddTodoState> {
       end: rangeDate.end,
     );
     emit(state.copyWith(rangeDate: newRangeDate, dueDate: newRangeDate.start));
+  }
+
+  void updateTempTagInput(String input) {
+    emit(state.copyWith(tempTagInput: input));
+  }
+
+  void addTag() {
+    if (state.tempTagInput == null) return;
+
+    final List<TagModel> newTags = List<TagModel>.from(state.tags);
+    newTags.add(TagModel.create(name: state.tempTagInput!));
+    emit(state.copyWith(tags: newTags, tempTagInput: null));
+  }
+
+  void removeTag(int index) {
+    final List<TagModel> newTags = List<TagModel>.from(state.tags);
+    newTags.removeAt(index);
+    emit(state.copyWith(tags: newTags));
   }
 
   Future<void> createTodo() async {

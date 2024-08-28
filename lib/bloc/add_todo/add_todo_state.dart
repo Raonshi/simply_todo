@@ -7,6 +7,8 @@ class AddTodoState {
   final DateTime dueDate;
   final RangeDateModel? rangeDate;
   final bool showNotification;
+  final String? tempTagInput;
+  final List<TagModel> tags;
 
   /* UI States */
   final bool visibleScrollArrow;
@@ -18,6 +20,8 @@ class AddTodoState {
     required this.dueDate,
     this.rangeDate,
     this.showNotification = true,
+    this.tempTagInput,
+    this.tags = const [],
     this.visibleScrollArrow = true,
     this.rangeSelection = false,
   });
@@ -30,6 +34,8 @@ class AddTodoState {
     bool? visibleScrollArrow,
     RangeDateModel? rangeDate,
     bool? rangeSelection,
+    List<TagModel>? tags,
+    String? tempTagInput,
   }) {
     return AddTodoState(
       title: title ?? this.title,
@@ -39,6 +45,8 @@ class AddTodoState {
       showNotification: showNotification ?? this.showNotification,
       visibleScrollArrow: visibleScrollArrow ?? this.visibleScrollArrow,
       rangeSelection: rangeSelection ?? this.rangeSelection,
+      tags: tags ?? this.tags,
+      tempTagInput: tempTagInput ?? this.tempTagInput,
     );
   }
 
@@ -56,6 +64,6 @@ class AddTodoState {
 
   @override
   String toString() {
-    return "AddTodoState{title: $title, content: $content, dueDate: $dueDate, rangeDate: ${rangeDate.toString()}, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow, rangeSelection: $rangeSelection}";
+    return "AddTodoState{title: $title, content: $content, dueDate: $dueDate, rangeDate: ${rangeDate.toString()}, showNotification: $showNotification, visibleScrollArrow: $visibleScrollArrow, rangeSelection: $rangeSelection, tags: $tags, tempTagInput: $tempTagInput}";
   }
 }

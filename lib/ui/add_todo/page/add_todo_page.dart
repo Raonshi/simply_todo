@@ -117,6 +117,61 @@ class _AddTodoPageBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 24.0),
 
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              if (state.tags.isNotEmpty) ...[
+                                ...state.tags.map(
+                                  (tag) => Chip(
+                                    label: Text(tag.label),
+                                    deleteIcon: Icon(
+                                      FontAwesomeIcons.xmark,
+                                      size: 16.0,
+                                    ),
+                                    onDeleted: () => context
+                                        .read<AddTodoBloc>()
+                                        .removeTag(state.tags.indexOf(tag)),
+                                  ),
+                                ),
+                                SizedBox(width: 4.0),
+                              ],
+                              Expanded(
+                                child: TextFormField(
+                                  cursorColor: context.colorTheme.onPrimary,
+                                  maxLength: 50,
+                                  decoration: InputDecoration(
+                                    labelText: "태그 입력",
+                                    labelStyle:
+                                        context.textTheme.titleSmall?.copyWith(
+                                      color: context.colorTheme.onPrimary,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: context.colorTheme.onPrimary,
+                                        width: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  onChanged: context
+                                      .read<AddTodoBloc>()
+                                      .updateTempTagInput,
+                                  onEditingComplete:
+                                      context.read<AddTodoBloc>().addTag,
+                                  validator: (String? value) {
+                                    if ((value ?? "").isEmpty) {
+                                      return "해시태그를 입력해주세요";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24.0),
+
                         // Content
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
