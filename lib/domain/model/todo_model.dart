@@ -1,6 +1,7 @@
 import 'package:simpletodo/common/tools.dart';
 import 'package:simpletodo/domain/model/base_model.dart';
 import 'package:simpletodo/domain/model/range_date_model.dart';
+import 'package:simpletodo/domain/model/tag_model.dart';
 
 final class TodoModel extends BaseModel {
   final int id;
@@ -11,8 +12,9 @@ final class TodoModel extends BaseModel {
   final RangeDateModel? rangeDate;
 
   final bool showNotification;
-
   final bool completed;
+
+  final List<TagModel> tags;
 
   const TodoModel._({
     required this.id,
@@ -22,6 +24,7 @@ final class TodoModel extends BaseModel {
     required this.completed,
     required this.showNotification,
     required this.rangeDate,
+    required this.tags,
   });
 
   /// Create a new Todo instance.
@@ -32,6 +35,7 @@ final class TodoModel extends BaseModel {
     required DateTime dueDate,
     required RangeDateModel? rangeDate,
     required bool showNotification,
+    List<TagModel> tags = const [],
   }) {
     return TodoModel._(
       id: uuid.v4().hashCode,
@@ -41,6 +45,7 @@ final class TodoModel extends BaseModel {
       rangeDate: rangeDate,
       completed: false,
       showNotification: showNotification,
+      tags: tags,
     );
   }
 
@@ -52,6 +57,7 @@ final class TodoModel extends BaseModel {
     String? content,
     bool? completed,
     bool? showNotification,
+    List<TagModel>? tags,
   }) {
     return TodoModel._(
       id: id,
@@ -61,6 +67,7 @@ final class TodoModel extends BaseModel {
       rangeDate: rangeDate,
       completed: completed ?? this.completed,
       showNotification: showNotification ?? this.showNotification,
+      tags: tags ?? this.tags,
     );
   }
 
@@ -75,6 +82,7 @@ final class TodoModel extends BaseModel {
           : null,
       completed: map['completed'],
       showNotification: map['showNotification'],
+      tags: (map['tags'] as List).map((e) => TagModel.fromJson(e)).toList(),
     );
   }
 
@@ -88,6 +96,7 @@ final class TodoModel extends BaseModel {
       'rangeDate': rangeDate?.toMap(),
       'completed': completed,
       'showNotification': showNotification,
+      "tags": tags.map((e) => e.toMap()).toList(),
     };
   }
 }
