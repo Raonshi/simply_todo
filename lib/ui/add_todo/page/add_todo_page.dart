@@ -54,16 +54,20 @@ class _AddTodoPageBody extends StatelessWidget {
             if (formKey.currentState?.validate() ?? false) {
               context.loaderOverlay.show();
               context.read<AddTodoBloc>().createTodo().then((_) {
-                context.loaderOverlay.hide();
-                Navigator.of(context).pop();
+                if (context.mounted) {
+                  context.loaderOverlay.hide();
+                  Navigator.of(context).pop();
+                }
               }).catchError((err) {
                 final String errMsg = switch (err) {
                   CustomException exception => exception.message,
                   _ => "알 수 없는 오류가 발생했습니다.",
                 };
 
-                context.loaderOverlay.hide();
-                showErrorSnackbar(context: context, msg: errMsg);
+                if (context.mounted) {
+                  context.loaderOverlay.hide();
+                  showErrorSnackbar(context: context, msg: errMsg);
+                }
               });
             } else {
               showErrorSnackbar(context: context, msg: "제목을 입력해주세요!");

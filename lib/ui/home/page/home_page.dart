@@ -142,8 +142,15 @@ class _HomePageBodyState extends State<_HomePageBody> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AddTodoPage()),
-                      ).then((_) => context.read<TodoListBloc>().refresh()),
+                          builder: (context) => const AddTodoPage(),
+                        ),
+                      ).then(
+                        (_) {
+                          if (context.mounted) {
+                            context.read<TodoListBloc>().refresh();
+                          }
+                        },
+                      ),
                       child: const Text("일정 추가"),
                     ),
                   )
