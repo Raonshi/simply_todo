@@ -55,6 +55,24 @@ class _HomePageBodyState extends State<_HomePageBody> {
           "심플리투두",
           style: context.textTheme.displayMedium,
         ),
+        actions: [
+          InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddTodoPage(),
+              ),
+            ).then(
+              (_) {
+                if (context.mounted) {
+                  context.read<TodoListBloc>().refresh();
+                }
+              },
+            ),
+            child: Text("일정 추가", style: context.textTheme.titleSmall),
+          ),
+          const SizedBox(width: 20.0),
+        ],
       ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
@@ -123,41 +141,6 @@ class _HomePageBodyState extends State<_HomePageBody> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: _currentIndex == 0
-          ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorTheme.onPrimary,
-                        foregroundColor: context.colorTheme.primary,
-                        textStyle: context.textTheme.titleSmall?.copyWith(
-                          color: context.colorTheme.primary,
-                        ),
-                      ),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddTodoPage(),
-                        ),
-                      ).then(
-                        (_) {
-                          if (context.mounted) {
-                            context.read<TodoListBloc>().refresh();
-                          }
-                        },
-                      ),
-                      child: const Text("일정 추가"),
-                    ),
-                  )
-                ],
-              ),
-            )
-          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: context.colorTheme.onPrimary,
