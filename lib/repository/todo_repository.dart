@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simpletodo/common/enums.dart';
+import 'package:simpletodo/services/shared_preference_service.dart';
 
 import '../model/todo_model.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simpletodo/ui/todo_list/bloc/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/common/tools.dart';
-import 'package:simpletodo/ui/home/widget/event_calendar.dart';
+import 'package:simpletodo/ui/calendar/widget/event_calendar.dart';
 import 'package:simpletodo/ui/home/widget/todo_list_item.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -75,7 +75,7 @@ class _TodoCalendarState extends State<TodoCalendar> {
         Divider(
           height: 4.0,
           thickness: 4.0,
-          color: context.colorTheme.onSurface.withOpacity(0.08),
+          color: context.colorTheme.onSurface.withValues(alpha: 0.08),
         ),
         Expanded(
           child: ListView.builder(

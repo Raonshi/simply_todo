@@ -27,10 +27,10 @@ class EventCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TableCalendar<TodoModel>(
       headerStyle: HeaderStyle(
-        formatButtonVisible: true,
-        titleCentered: true,
-        leftChevronVisible: true,
-        rightChevronVisible: true,
+        formatButtonVisible: false,
+        titleCentered: false,
+        leftChevronVisible: false,
+        rightChevronVisible: false,
         headerPadding: const EdgeInsets.only(
           left: 20.0,
           right: 20.0,

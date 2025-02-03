@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simpletodo/ui/calendar/widget/calendar_view.dart';
 import 'package:simpletodo/ui/todo_list/bloc/todo_list_bloc.dart';
 import 'package:simpletodo/common/theme.dart';
 import 'package:simpletodo/repository/todo_repository.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_page.dart';
-import 'package:simpletodo/ui/home/widget/todo_calendar.dart';
 import 'package:simpletodo/ui/todo_list/widget/todo_list_view.dart';
 
 class HomePage extends StatelessWidget {
@@ -52,76 +52,28 @@ class _HomePageBodyState extends State<_HomePageBody> {
           "심플리투두",
           style: context.textTheme.displayMedium,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(FontAwesomeIcons.plus),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddTodoPage())).then(
+              (_) {
+                context.read<TodoListBloc>().refresh();
+              },
+            ),
+          ),
+        ],
       ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
-        children: [
+        children: const [
           TodoListView(),
-          BlocBuilder<TodoListBloc, TodoListState>(
-            builder: (context, state) => switch (state) {
-              TodoListInitial _ => Container(),
-              TodoListLoading _ => const Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              TodoListLoaded loaded => TodoCalendar(
-                  todos: loaded.todos,
-                ),
-              TodoListError error => Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.colorTheme.error,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40.0,
-                      vertical: 12.0,
-                    ),
-                    child: Text(
-                      error.exception.toString(),
-                      style: context.textTheme.labelLarge?.copyWith(
-                        color: context.colorTheme.onError,
-                      ),
-                    ),
-                  ),
-                ),
-              // ignore: unreachable_switch_case
-              _ => Container(),
-            },
-          ),
+          CalendarView(),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: _currentIndex == 0
-          ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: context.colorTheme.onPrimary,
-                        foregroundColor: context.colorTheme.primary,
-                        textStyle: context.textTheme.titleSmall?.copyWith(
-                          color: context.colorTheme.primary,
-                        ),
-                      ),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddTodoPage())).then(
-                        (_) {
-                          context.read<TodoListBloc>().refresh();
-                        },
-                      ),
-                      child: const Text("일정 추가"),
-                    ),
-                  )
-                ],
-              ),
-            )
-          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: context.colorTheme.onPrimary,
