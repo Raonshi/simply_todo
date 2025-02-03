@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:simpletodo/common/tools.dart';
-import 'package:simpletodo/domain/model/notification_payload_model.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+import '../model/notification_payload_model.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -124,7 +125,7 @@ class NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      payload: jsonEncode(notification.toMap()),
+      payload: jsonEncode(notification.toJson()),
     );
 
     _notiPlugin.pendingNotificationRequests().then((value) {

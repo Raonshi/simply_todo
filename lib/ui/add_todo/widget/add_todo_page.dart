@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:simpletodo/bloc/add_todo/add_todo_bloc.dart';
+import 'package:simpletodo/ui/add_todo/bloc/add_todo_bloc.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/domain/repository/todo/todo_repository_impl.dart';
+import 'package:simpletodo/repository/todo_repository.dart';
 import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
 import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
 
-import '../widget/add_todo_app_bar.dart';
+import 'add_todo_app_bar.dart';
 
 class AddTodoPage extends StatelessWidget {
   const AddTodoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => TodoRepositoryImpl(),
-      child: BlocProvider(
-        lazy: false,
-        create: (context) => AddTodoBloc(
-          todoRepo: RepositoryProvider.of<TodoRepositoryImpl>(context),
-        ),
-        child: _AddTodoPageBody(
-          formKey: GlobalKey<FormState>(),
-        ),
+    return BlocProvider(
+      lazy: false,
+      create: (context) => AddTodoBloc(
+        todoRepo: context.read<TodoRepository>(),
+      ),
+      child: _AddTodoPageBody(
+        formKey: GlobalKey<FormState>(),
       ),
     );
   }

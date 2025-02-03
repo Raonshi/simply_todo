@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simpletodo/common/enums.dart';
-import 'package:simpletodo/domain/model/todo_model.dart';
-import 'todo_repository.dart';
+part of 'todo_repository.dart';
 
-class TodoRepositoryImpl implements TodoRepository {
+final class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<List<TodoModel>> getTodoList() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -18,7 +14,7 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<void> saveTodoList(List<TodoModel> todos) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     final List<String> dataList =
-        todos.map((e) => jsonEncode(e.toMap())).toList();
+        todos.map((e) => jsonEncode(e.toJson())).toList();
 
     await pref.setStringList(LocalStorageKeys.todoList.str, dataList);
   }
@@ -48,7 +44,7 @@ class TodoRepositoryImpl implements TodoRepository {
     }
 
     final List<String> dataList =
-        todos.map((e) => jsonEncode(e.toMap())).toList();
+        todos.map((e) => jsonEncode(e.toJson())).toList();
     await pref.setStringList(LocalStorageKeys.todoList.str, dataList);
   }
 }

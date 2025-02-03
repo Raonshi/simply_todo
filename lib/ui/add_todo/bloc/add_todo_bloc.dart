@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:simpletodo/common/exception.dart';
 import 'package:simpletodo/common/tools.dart';
-import 'package:simpletodo/domain/model/notification_payload_model.dart';
-import 'package:simpletodo/domain/model/range_date_model.dart';
-import 'package:simpletodo/domain/model/todo_model.dart';
-import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
-import 'package:simpletodo/service/notification_service.dart';
+import 'package:simpletodo/repository/todo_repository.dart';
+import 'package:simpletodo/services/notification_service.dart';
+
+import '../../../model/notification_payload_model.dart';
+import '../../../model/range_date_model.dart';
+import '../../../model/todo_model.dart';
 
 part 'add_todo_state.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/domain/model/range_date_model.dart';
+import 'package:simpletodo/model/range_date_model.dart';
 import 'package:simpletodo/ui/add_todo/widget/range_date_calendar.dart';
 
 import 'point_date_calendar.dart';

@@ -1,10 +1,9 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'package:simpletodo/domain/model/notification_payload_model.dart';
-import 'package:simpletodo/domain/model/todo_model.dart';
 import 'package:bloc/bloc.dart';
-import 'package:simpletodo/domain/repository/todo/todo_repository.dart';
-import 'package:simpletodo/service/notification_service.dart';
+import 'package:simpletodo/repository/todo_repository.dart';
+import 'package:simpletodo/services/notification_service.dart';
+
+import '../../../model/notification_payload_model.dart';
+import '../../../model/todo_model.dart';
 
 part 'todo_list_state.dart';
 
@@ -37,17 +36,11 @@ class TodoListBloc extends Cubit<TodoListState> {
         final bool newValue = !newTodos[index].completed;
         final TodoModel newTodo = newTodos[index].copyWith(
           completed: newValue,
-          showNotification: newValue
-              ? false
-              : newTodos[index].dueDate != null
-                  ? true
-                  : false,
+          showNotification: newValue ? false : true,
         );
         newTodos[index] = newTodo;
 
-        if (newTodo.dueDate != null &&
-            !newTodo.completed &&
-            newTodo.showNotification) {
+        if (!newTodo.completed && newTodo.showNotification) {
           await NotificationService().scheduleNotification(
             NotificationPayloadModel.create(
               title: newTodo.title,
