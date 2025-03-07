@@ -23,6 +23,16 @@ ThemeData lightTheme = ThemeData(
     backgroundColor: Colors.grey.shade50,
     foregroundColor: Colors.black,
   ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.white,
+    selectedItemColor: Colors.black,
+    unselectedItemColor: Colors.grey.shade400,
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
+    selectedIconTheme: const IconThemeData(size: 24.0),
+    unselectedIconTheme: const IconThemeData(size: 24.0),
+    type: BottomNavigationBarType.fixed,
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontSize: 48.0,
