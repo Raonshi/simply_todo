@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/common/theme.dart';
+import 'package:simplytodo/common/theme.dart';
 
 import 'todo_calendar.dart';
 import '../../todo_list/bloc/todo_list_bloc.dart';

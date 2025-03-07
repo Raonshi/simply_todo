@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/model/todo_model.dart';
-import 'package:simpletodo/ui/todo_list/bloc/todo_list_bloc.dart';
-import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/ui/home/widget/todo_list_item.dart';
+import 'package:simplytodo/model/todo_model.dart';
+import 'package:simplytodo/ui/todo_list/bloc/todo_list_bloc.dart';
+import 'package:simplytodo/common/theme.dart';
+import 'package:simplytodo/ui/home/widget/todo_list_item.dart';
 
 class InCompletedList extends StatelessWidget {
   const InCompletedList({super.key, required this.todos});

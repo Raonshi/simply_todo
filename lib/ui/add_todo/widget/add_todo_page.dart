@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:simpletodo/ui/add_todo/bloc/add_todo_bloc.dart';
-import 'package:simpletodo/common/exception.dart';
-import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/repository/todo_repository.dart';
-import 'package:simpletodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
-import 'package:simpletodo/ui/global_widget/common_snackbar.dart';
+import 'package:simplytodo/ui/add_todo/bloc/add_todo_bloc.dart';
+import 'package:simplytodo/common/exception.dart';
+import 'package:simplytodo/common/theme.dart';
+import 'package:simplytodo/repository/todo_repository.dart';
+import 'package:simplytodo/ui/add_todo/widget/add_todo_schedule_panel.dart';
+import 'package:simplytodo/ui/global_widget/common_snackbar.dart';
 
 import 'add_todo_app_bar.dart';
 

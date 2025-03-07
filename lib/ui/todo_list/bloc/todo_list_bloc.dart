@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:simpletodo/repository/todo_repository.dart';
-import 'package:simpletodo/services/notification_service.dart';
+import 'package:simplytodo/repository/todo_repository.dart';
+import 'package:simplytodo/services/notification_service.dart';
 
 import '../../../model/notification_payload_model.dart';
 import '../../../model/todo_model.dart';

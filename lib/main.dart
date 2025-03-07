@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:simpletodo/services/notification_service.dart';
-import 'package:simpletodo/ui/simple_todo_app.dart';
+import 'package:simplytodo/services/notification_service.dart';
+import 'package:simplytodo/ui/simple_todo_app.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();

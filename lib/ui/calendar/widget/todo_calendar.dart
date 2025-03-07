@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/ui/todo_list/bloc/todo_list_bloc.dart';
-import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/common/tools.dart';
-import 'package:simpletodo/ui/calendar/widget/event_calendar.dart';
-import 'package:simpletodo/ui/home/widget/todo_list_item.dart';
+import 'package:simplytodo/ui/todo_list/bloc/todo_list_bloc.dart';
+import 'package:simplytodo/common/theme.dart';
+import 'package:simplytodo/common/tools.dart';
+import 'package:simplytodo/ui/calendar/widget/event_calendar.dart';
+import 'package:simplytodo/ui/home/widget/todo_list_item.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../model/todo_model.dart';

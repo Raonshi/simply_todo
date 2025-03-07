@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/ui/todo_list/bloc/todo_list_bloc.dart';
-import 'package:simpletodo/ui/todo_list/widget/empty_todo_panel.dart';
+import 'package:simplytodo/ui/todo_list/bloc/todo_list_bloc.dart';
+import 'package:simplytodo/ui/todo_list/widget/empty_todo_panel.dart';
 
 import '../../../model/todo_model.dart';
 import 'completed_list.dart';

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:simpletodo/common/theme.dart';
+import 'package:simplytodo/common/theme.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../model/todo_model.dart';

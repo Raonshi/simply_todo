@@ -1,0 +1,2 @@
+/Users/hongsun-won/Dev/flutter_projects/simply_todo/android/app/.cxx/Debug/e58663x2/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/hongsun-won/Dev/flutter_projects/simply_todo/android/app/.cxx/Debug/e58663x2/arm64-v8a/CMakeFiles/rebuild_cache.dir

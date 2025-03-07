@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:simpletodo/common/theme.dart';
-import 'package:simpletodo/config/di.dart';
-import 'package:simpletodo/ui/home/page/home_page.dart';
+import 'package:simplytodo/common/theme.dart';
+import 'package:simplytodo/config/di.dart';
+import 'package:simplytodo/ui/home/page/home_page.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class SimpleTodoApp extends StatelessWidget {

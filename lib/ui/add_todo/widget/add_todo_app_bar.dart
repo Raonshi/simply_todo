@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:simpletodo/common/theme.dart';
+import 'package:simplytodo/common/theme.dart';
 
 final class AddTodoAppBar extends AppBar {
   AddTodoAppBar({

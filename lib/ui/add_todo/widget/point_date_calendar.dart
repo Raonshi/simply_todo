@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simpletodo/common/theme.dart';
+import 'package:simplytodo/common/theme.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class PointDateCalendar extends StatelessWidget {
