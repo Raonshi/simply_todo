@@ -1,65 +1,47 @@
 part of 'todo_repository.dart';
 
 final class TodoRepositoryImpl implements TodoRepository {
-  final SharedPreferenceService Function() _localServiceFactory;
+  final TodoLocalDataService Function() dataService;
+  final NotificationService _notificationService;
 
-  const TodoRepositoryImpl({
-    SharedPreferenceService Function()? localServiceFactory,
-  }) : _localServiceFactory =
-            localServiceFactory ?? SharedPreferenceService.new;
+  TodoRepositoryImpl({
+    TodoLocalDataService Function()? dataService,
+    NotificationService? notificationService,
+  })  : dataService = dataService ?? TodoLocalDataService.new,
+        _notificationService = notificationService ?? NotificationService();
 
   @override
-  Future<List<TodoModel>> getTodoList() =>
-      _localServiceFactory().getStringList(LocalStorageKeys.todoList.str).then(
-        (dataIter) {
-          if (dataIter == null) return [];
-          return dataIter
-              .map((e) => TodoModel.fromJson(jsonDecode(e)))
-              .toList();
-        },
+  Future<int> saveTodo(TodoModel todo) async {
+    final int id = await dataService().saveTodo(todo.toJson());
+    if (todo.showNotification) {
+      await _notificationService.scheduleNotification(
+        NotificationPayloadModel.create(
+          title: todo.title,
+          content: todo.content,
+          scheduledDate: DateTime.now(),
+          dueDate: todo.rangeDate?.end ?? todo.dueDate,
+        ),
       );
-
-  @override
-  Future<void> saveTodoList(List<TodoModel> todos) =>
-      _localServiceFactory().saveList(
-        key: LocalStorageKeys.todoList.str,
-        valueIter: todos.map((e) => jsonEncode(e.toJson())).toList(),
-      );
-
-  @override
-  Future<void> clearTodoList() =>
-      _localServiceFactory().remove(LocalStorageKeys.todoList.str);
-
-  @override
-  Future<void> deleteTodo(int id) async {
-    final List<TodoModel> todos = await getTodoList();
-    final List<TodoModel> newTodos = todos.where((e) => e.id != id).toList();
-    await saveTodoList(newTodos);
-  }
-
-  @override
-  Future<void> saveTodo(TodoModel todo) async {
-    final SharedPreferenceService localService = _localServiceFactory();
-    final List<TodoModel> prevTodos = await localService
-        .getStringList(LocalStorageKeys.todoList.str)
-        .then((dateIter) {
-      if (dateIter == null) return [];
-      return dateIter.map((e) => TodoModel.fromJson(jsonDecode(e))).toList();
-    });
-
-    final int idx = prevTodos.indexWhere((e) => e.id == todo.id);
-    if (idx == -1) {
-      prevTodos.add(todo);
-    } else {
-      prevTodos[idx] = todo;
     }
-
-    final List<String> dataList =
-        prevTodos.map((e) => jsonEncode(e.toJson())).toList();
-
-    await localService.saveList(
-      key: LocalStorageKeys.todoList.str,
-      valueIter: dataList,
-    );
+    return id;
   }
+
+  @override
+  Future<Iterable<TodoModel>> getTodoList() => dataService()
+      .getTodoList()
+      .then((jsonIter) => jsonIter.map(TodoModel.fromJson));
+
+  @override
+  Future<TodoModel> getTodo(int id) =>
+      dataService().getTodo(id).then(TodoModel.fromJson);
+
+  @override
+  Future<int> updateTodo(TodoModel todo) =>
+      dataService().updateTodo(todo.toJson());
+
+  @override
+  Future<void> deleteTodo(int id) => dataService().deleteTodo(id);
+
+  @override
+  Future<void> clearTodoList() => dataService().clearTodoTable();
 }

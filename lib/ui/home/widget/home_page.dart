@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simplytodo/core/repository/notification_repository.dart';
 import 'package:simplytodo/ui/calendar/widget/calendar_view.dart';
 import 'package:simplytodo/ui/home/bloc/home_bloc.dart';
 import 'package:simplytodo/ui/todo_list/bloc/todo_list_bloc.dart';
@@ -20,6 +21,7 @@ class HomePage extends StatelessWidget {
           lazy: false,
           create: (context) => TodoListBloc(
             todoRepo: context.read<TodoRepository>(),
+            notiRepo: context.read<NotificationRepository>(),
           ),
         ),
         BlocProvider(

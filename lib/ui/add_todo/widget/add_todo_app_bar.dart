@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplytodo/common/theme.dart';
 
 final class AddTodoAppBar extends AppBar {
@@ -9,7 +10,7 @@ final class AddTodoAppBar extends AppBar {
     required VoidCallback onTapAdd,
   }) : super(
           leading: IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: context.pop,
             iconSize: 32.0,
             icon: Icon(
               FontAwesomeIcons.chevronLeft,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simplytodo/common/theme.dart';
+import 'package:simplytodo/route/nav_path.dart';
 
 import '../bloc/todo_list_bloc.dart';
 
@@ -22,6 +24,10 @@ class EmptyTodoPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12.0),
+          ElevatedButton(
+            onPressed: () => context.pushNamed(NavPath.addTodo.path),
+            child: Text("추가"),
+          ),
           IconButton(
             onPressed: () {
               context.read<TodoListBloc>().refresh();

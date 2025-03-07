@@ -6,7 +6,7 @@ import 'package:simplytodo/common/tools.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../model/notification_payload_model.dart';
+import '../../model/notification_payload_model.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();

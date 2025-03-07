@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplytodo/common/theme.dart';
 import 'package:simplytodo/config/di.dart';
-import 'package:simplytodo/ui/home/widget/home_page.dart';
+import 'package:simplytodo/route/nav_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class SimpleTodoApp extends StatelessWidget {
@@ -13,11 +13,11 @@ class SimpleTodoApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: configureDependencies,
       child: GlobalLoaderOverlay(
-        child: MaterialApp(
+        child: MaterialApp.router(
           theme: lightTheme,
           debugShowCheckedModeBanner: false,
           title: "심플리투두",
-          home: const HomePage(),
+          routerConfig: router,
         ),
       ),
     );

@@ -13,10 +13,7 @@ class TodoListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocSelector<TodoListBloc, TodoListState, List<TodoModel>>(
-      selector: (state) => switch (state) {
-        TodoListLoaded loaded => loaded.todos,
-        _ => [],
-      },
+      selector: (state) => state.todos,
       builder: (context, todos) {
         final List<TodoModel> completes =
             todos.where((e) => e.completed).toList();

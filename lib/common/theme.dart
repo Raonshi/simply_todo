@@ -33,6 +33,12 @@ ThemeData lightTheme = ThemeData(
     unselectedIconTheme: const IconThemeData(size: 24.0),
     type: BottomNavigationBarType.fixed,
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
+    ),
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       fontSize: 48.0,

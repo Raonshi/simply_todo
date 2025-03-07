@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:simplytodo/ui/add_todo/bloc/add_todo_bloc.dart';
 import 'package:simplytodo/common/exception.dart';
@@ -52,7 +53,7 @@ class _AddTodoPageBody extends StatelessWidget {
               context.loaderOverlay.show();
               context.read<AddTodoBloc>().createTodo().then((_) {
                 context.loaderOverlay.hide();
-                Navigator.of(context).pop();
+                context.pop();
               }).catchError((err) {
                 final String errMsg = switch (err) {
                   CustomException exception => exception.message,
