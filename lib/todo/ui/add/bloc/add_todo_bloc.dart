@@ -1,21 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:simplytodo/common/exception.dart';
 import 'package:simplytodo/common/tools.dart';
+import 'package:simplytodo/core/repository/notification_repository.dart';
 import 'package:simplytodo/repository/todo_repository.dart';
-import 'package:simplytodo/core/service/notification_service.dart';
-
-import '../../../model/notification_payload_model.dart';
-import '../../../model/range_date_model.dart';
-import '../../../model/todo_model.dart';
+import '../../../../model/notification_payload_model.dart';
+import '../../../../model/range_date_model.dart';
+import '../../../../model/todo_model.dart';
 
 part 'add_todo_state.dart';
 
 class AddTodoBloc extends Cubit<AddTodoState> {
-  final TodoRepository todoRepo;
+  final TodoRepository _todoRepo;
+  final NotificationRepository _notiRepo;
 
   AddTodoBloc({
-    required this.todoRepo,
-  }) : super(AddTodoState(dueDate: DateTime.now()));
+    required TodoRepository todoRepo,
+    required NotificationRepository notiRepo,
+  })  : _todoRepo = todoRepo,
+        _notiRepo = notiRepo,
+        super(AddTodoState(dueDate: DateTime.now()));
 
   void setVisibleScrollArrow(bool dismissable) {
     emit(state.copyWith(visibleScrollArrow: !dismissable));
@@ -75,7 +78,7 @@ class AddTodoBloc extends Cubit<AddTodoState> {
         throw CustomException("알림 설정을 선택한 경우, 오늘 이후 날짜로 설정해주세요!");
       }
 
-      await NotificationService().scheduleNotification(
+      _notiRepo.scheduleNotification(
         NotificationPayloadModel.create(
           title: todo.title,
           content: todo.content,
@@ -89,6 +92,6 @@ class AddTodoBloc extends Cubit<AddTodoState> {
       );
     }
 
-    await todoRepo.saveTodo(todo);
+    await _todoRepo.saveTodo(todo);
   }
 }

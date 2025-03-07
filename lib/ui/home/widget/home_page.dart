@@ -7,7 +7,7 @@ import 'package:simplytodo/ui/home/bloc/home_bloc.dart';
 import 'package:simplytodo/ui/todo_list/bloc/todo_list_bloc.dart';
 import 'package:simplytodo/common/theme.dart';
 import 'package:simplytodo/repository/todo_repository.dart';
-import 'package:simplytodo/ui/add_todo/widget/add_todo_page.dart';
+import 'package:simplytodo/todo/ui/add/widget/add_todo_page.dart';
 import 'package:simplytodo/ui/todo_list/widget/todo_list_view.dart';
 
 class HomePage extends StatelessWidget {

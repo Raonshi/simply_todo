@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simplytodo/route/nav_path.dart';
-import 'package:simplytodo/ui/add_todo/widget/add_todo_page.dart';
+import 'package:simplytodo/todo/ui/add/widget/add_todo_page.dart';
 import 'package:simplytodo/ui/home/widget/home_page.dart';
 
 GoRouter router = GoRouter(
